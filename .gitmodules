@@ -1,0 +1,6 @@
+[submodule "CRA-Check/libs/GrypeCLIWrapper"]
+	path = CRA-Check/libs/GrypeCLIWrapper
+	url = https://github.com/cracheck/GrypeCLIWrapper.git
+[submodule "CRA-Check/libs/SyftCLIWrapper"]
+	path = CRA-Check/libs/SyftCLIWrapper
+	url = https://github.com/cracheck/SyftCLIWrapper.git
