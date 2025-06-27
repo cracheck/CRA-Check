@@ -6,7 +6,24 @@
         xmlns:local="clr-namespace:CRA_Check"
         mc:Ignorable="d"
         Title="CRA-Check" Height="450" Width="800">
-    <Grid>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_New project"/>
+                <MenuItem Header="_Open project"/>
+                <MenuItem Header="_Exit"/>
+            </MenuItem>
+            <MenuItem Header="_Tools">
+                <MenuItem Header="_Create SBOM"/>
+                <MenuItem Header="_Check vulnerabilities"/>
+                <MenuItem Header="_Exit"/>
+            </MenuItem>
+            <MenuItem Header="?">
+                <MenuItem Header="_About"/>
+            </MenuItem>
+        </Menu>
+        <Grid>
 
-    </Grid>
+        </Grid>
+    </DockPanel>
 </Window>
