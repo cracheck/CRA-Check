@@ -25,46 +25,46 @@ namespace CRA_Check.Models
         }
 
         // May be a JSON object in the futur
-        private string m_Sbom;
+        private string _sbom;
         public string Sbom
         {
-            get { return m_Sbom; }
+            get { return _sbom; }
             set
             {
-                m_Sbom = value;
+                _sbom = value;
                 OnPropertyChanged();
             }
         }
 
-        private DateTime m_LastScan;
+        private DateTime _lastScan;
         public DateTime LastScan
         {
-            get { return m_LastScan; }
+            get { return _lastScan; }
             set
             {
-                m_LastScan = value;
+                _lastScan = value;
                 OnPropertyChanged();
             }
         }
 
-        private bool m_IsActive;
+        private bool _isActive;
         public bool IsActive
         {
-            get { return m_IsActive; }
+            get { return _isActive; }
             set
             {
-                m_IsActive = value;
+                _isActive = value;
                 OnPropertyChanged();
             }
         }
 
-        private ObservableCollection<Vulnerability> m_Vulnerabilities;
+        private ObservableCollection<Vulnerability> _vulnerabilities;
         public ObservableCollection<Vulnerability> Vulnerabilities
         {
-            get { return m_Vulnerabilities; }
+            get { return _vulnerabilities; }
             set
             {
-                m_Vulnerabilities = value;
+                _vulnerabilities = value;
                 OnPropertyChanged();
             }
         }

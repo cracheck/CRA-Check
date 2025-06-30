@@ -5,20 +5,20 @@ namespace CRA_Check.Data
 {
     public class AppDbContext : DbContext
     {
-        private string m_DatabaseFilename;
+        private readonly string _databaseFilename;
         public DbSet<ProjectInformation> ProjectInformation { get; set; }
         public DbSet<Software> Softwares { get; set; }
         public DbSet<Release> Releases { get; set; }
         public DbSet<Vulnerability> Vulnerabilities { get; set; }
 
-        public AppDbContext(string _DatabaseFilename)
+        public AppDbContext(string databaseFilename)
         {
-            m_DatabaseFilename = _DatabaseFilename;
+            _databaseFilename = databaseFilename;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder _OptionBuilder)
         {
-            _OptionBuilder.UseSqlite($"Data Source={m_DatabaseFilename}");
+            _OptionBuilder.UseSqlite($"Data Source={_databaseFilename}");
         }
 
         protected override void OnModelCreating(ModelBuilder _ModelBuilder)

@@ -7,13 +7,13 @@ namespace CRA_Check.Models
     {
         public int Id { get; set; } = 1;
 
-        private string m_Name;
+        private string _name;
         public string Name
         {
-            get { return m_Name; }
+            get { return _name; }
             set
             {
-                m_Name = value;
+                _name = value;
                 OnPropertyChanged();
             }
         }

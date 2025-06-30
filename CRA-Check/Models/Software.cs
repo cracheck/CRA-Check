@@ -8,24 +8,24 @@ namespace CRA_Check.Models
     {
         public int Id { get; set; }
 
-        private string m_Name;
+        private string _name;
         public string Name
         {
-            get { return m_Name; }
+            get { return _name; }
             set
             {
-                m_Name = value;
+                _name = value;
                 OnPropertyChanged();
             }
         }
 
-        private ObservableCollection<Release> m_Releases;
+        private ObservableCollection<Release> _releases;
         public ObservableCollection<Release> Release
         {
-            get { return m_Releases; }
+            get { return _releases; }
             set
             {
-                m_Releases = value;
+                _releases = value;
                 OnPropertyChanged();
             }
         }
