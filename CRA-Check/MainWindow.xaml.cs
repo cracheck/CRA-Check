@@ -2,7 +2,9 @@
 using CRA_Check.Data;
 using CRA_Check.Models;
 using CRA_Check.ViewModels;
+using CRA_Check.Views;
 using Microsoft.Win32;
+using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 
 namespace CRA_Check
 {
@@ -55,9 +57,9 @@ namespace CRA_Check
                 Multiselect = false 
             };
 
-            bool? status = openFileDialog.ShowDialog(this);
+            var result = openFileDialog.ShowDialog();
 
-            if (status != null && (bool) status)
+            if (result == System.Windows.Forms.DialogResult.OK)
             {
                 MainViewModel.OpenWorkspace(openFileDialog.FileName);
             }
@@ -66,6 +68,17 @@ namespace CRA_Check
         private void Exit_OnClick(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void NewWorkspace_OnClick(object sender, RoutedEventArgs e)
+        {
+            NewWorkspaceWindow window = new NewWorkspaceWindow();
+            window.ShowDialog();
+
+            if (window.IsValid)
+            {
+                MainViewModel.CreateWorkspace(window.WorkspaceFilename, window.WorkspaceName);
+            }
         }
     }
 }

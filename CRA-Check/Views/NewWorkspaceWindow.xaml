@@ -1,0 +1,33 @@
+﻿<Window x:Class="CRA_Check.Views.NewWorkspaceWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CRA_Check.Views"
+        mc:Ignorable="d"
+        Title="New workspace"
+        SizeToContent="WidthAndHeight"
+        ResizeMode="NoResize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" Text="Name" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding WorkspaceName, UpdateSourceTrigger=PropertyChanged}" MinWidth="120"/>
+        <TextBlock Grid.Row="0" Grid.Column="2" Margin="0,5" Text=".cradb" VerticalAlignment="Bottom"/>
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" Text="Path" VerticalAlignment="Center" />
+        <TextBlock Grid.Row="1" Grid.Column="1" Margin="5" Text="{Binding WorkspaceFilename}" VerticalAlignment="Center" MaxWidth="200"/>
+        <Button Grid.Row="1" Grid.Column="2" Margin="5" Content="Browse..." Click="Browse_OnClick"/>
+
+        <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" Content="Create" Click="CreateWorkspace_OnClick" HorizontalAlignment="Center"/>
+    </Grid>
+</Window>

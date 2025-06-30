@@ -28,11 +28,21 @@ namespace CRA_Check.ViewModels
 
         public void OpenWorkspace(string filename)
         {
-            _databaseManager.DatabaseFilename = filename;
+            _databaseManager.ChangeDatabase(filename);
 
             using (DbContext dbContext = _databaseManager.GetContext())
             {
                 Softwares = new ObservableCollection<Software>(dbContext.Softwares.ToList());
+            }
+        }
+
+        public void CreateWorkspace(string filename, string name)
+        {
+            OpenWorkspace(filename);
+            using (DbContext dbContext = _databaseManager.GetContext())
+            {
+                dbContext.WorkspaceInformation.Add(new WorkspaceInformation(){Name = name});
+                dbContext.SaveChanges();
             }
         }
 
