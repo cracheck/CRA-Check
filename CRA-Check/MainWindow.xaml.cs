@@ -13,7 +13,7 @@ namespace CRA_Check
         {
             InitializeComponent();
 
-            // TryDb();
+            //TryDb();
         }
 
         private void TryDb()
@@ -21,7 +21,7 @@ namespace CRA_Check
             using var db = new AppDbContext(@"d:\app.db");
             db.Database.EnsureCreated();
 
-            var project = new Project() { Name = "Proj1" };
+            var projectInformation = new ProjectInformation() { Name = "Proj1" };
             var software = new Software() { Name = "Soft1" };
             var software2 = new Software() { Name = "Soft2" };
             var release1 = new Release() { Version = new Version(3, 2), Sbom = "sbom1" };
@@ -32,10 +32,9 @@ namespace CRA_Check
             software.Release.Add(release2);
             software2.Release.Add(release3);
 
-            project.Softwares.Add(software);
-            project.Softwares.Add(software2);
-
-            db.Projects.Add(project);
+            db.ProjectInformation.Add(projectInformation);
+            db.Softwares.Add(software);
+            db.Softwares.Add(software2);
             db.SaveChanges();
         }
     }

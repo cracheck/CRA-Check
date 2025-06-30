@@ -6,7 +6,7 @@ namespace CRA_Check.Data
     public class AppDbContext : DbContext
     {
         private string m_DatabaseFilename;
-        public DbSet<Project> Projects { get; set; }
+        public DbSet<ProjectInformation> ProjectInformation { get; set; }
         public DbSet<Software> Softwares { get; set; }
         public DbSet<Release> Releases { get; set; }
         public DbSet<Vulnerability> Vulnerabilities { get; set; }
@@ -23,12 +23,6 @@ namespace CRA_Check.Data
 
         protected override void OnModelCreating(ModelBuilder _ModelBuilder)
         {
-            _ModelBuilder.Entity<Project>()
-                .HasMany(p => p.Softwares)
-                .WithOne(s => s.Project)
-                .HasForeignKey(s => s.ProjectId)
-                .OnDelete(DeleteBehavior.Cascade);
-
             _ModelBuilder.Entity<Software>()
                 .HasMany(s => s.Release)
                 .WithOne(r => r.Software)

@@ -1,12 +1,11 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace CRA_Check.Models
 {
-    public class Project : INotifyPropertyChanged
+    public class ProjectInformation : INotifyPropertyChanged
     {
-        public int Id { get; set; }
+        public int Id { get; set; } = 1;
 
         private string m_Name;
         public string Name
@@ -17,22 +16,6 @@ namespace CRA_Check.Models
                 m_Name = value;
                 OnPropertyChanged();
             }
-        }
-
-        private ObservableCollection<Software> m_Softwares;
-        public ObservableCollection<Software> Softwares
-        {
-            get { return m_Softwares; }
-            set
-            {
-                m_Softwares = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Project()
-        {
-            Softwares = new ObservableCollection<Software>();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
