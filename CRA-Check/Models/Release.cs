@@ -1,18 +1,25 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 
 namespace CRA_Check.Models
 {
     public class Release : INotifyPropertyChanged
     {
-        private Version m_Version;
+        public int Id { get; set; }
+        public Software Software { get; set; }
+        public int SoftwareId { get; set; }
+
+        public string VersionStr { get; set; }
+
+        [NotMapped]
         public Version Version
         {
-            get { return m_Version; }
+            get { return Version.TryParse(VersionStr, out var v) ? v : new Version(0, 0); }
             set
             {
-                m_Version = value;
+                VersionStr = value.ToString();
                 OnPropertyChanged();
             }
         }
@@ -60,6 +67,11 @@ namespace CRA_Check.Models
                 m_Vulnerabilities = value;
                 OnPropertyChanged();
             }
+        }
+
+        public Release()
+        {
+            Vulnerabilities = new ObservableCollection<Vulnerability>();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

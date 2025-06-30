@@ -1,13 +1,6 @@
-﻿using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using CRA_Check.Data;
+using CRA_Check.Models;
 
 namespace CRA_Check
 {
@@ -19,6 +12,31 @@ namespace CRA_Check
         public MainWindow()
         {
             InitializeComponent();
+
+            // TryDb();
+        }
+
+        private void TryDb()
+        {
+            using var db = new AppDbContext(@"d:\app.db");
+            db.Database.EnsureCreated();
+
+            var project = new Project() { Name = "Proj1" };
+            var software = new Software() { Name = "Soft1" };
+            var software2 = new Software() { Name = "Soft2" };
+            var release1 = new Release() { Version = new Version(3, 2), Sbom = "sbom1" };
+            var release2 = new Release() { Version = new Version(3, 3), Sbom = "sbom2" };
+            var release3 = new Release() { Version = new Version(4, 3), Sbom = "sbom3" };
+
+            software.Release.Add(release1);
+            software.Release.Add(release2);
+            software2.Release.Add(release3);
+
+            project.Softwares.Add(software);
+            project.Softwares.Add(software2);
+
+            db.Projects.Add(project);
+            db.SaveChanges();
         }
     }
 }

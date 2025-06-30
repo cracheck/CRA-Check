@@ -6,6 +6,8 @@ namespace CRA_Check.Models
 {
     public class Project : INotifyPropertyChanged
     {
+        public int Id { get; set; }
+
         private string m_Name;
         public string Name
         {
@@ -26,6 +28,11 @@ namespace CRA_Check.Models
                 m_Softwares = value;
                 OnPropertyChanged();
             }
+        }
+
+        public Project()
+        {
+            Softwares = new ObservableCollection<Software>();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -6,6 +6,10 @@ namespace CRA_Check.Models
 {
     public class Software : INotifyPropertyChanged
     {
+        public int Id { get; set; }
+        public Project Project { get; set; }
+        public int ProjectId { get; set; }
+
         private string m_Name;
         public string Name
         {
@@ -26,6 +30,11 @@ namespace CRA_Check.Models
                 m_Releases = value;
                 OnPropertyChanged();
             }
+        }
+
+        public Software()
+        {
+            Release = new ObservableCollection<Release>();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
