@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace CRA_Check.Models
 {
-    public class ProjectInformation : INotifyPropertyChanged
+    public class WorkspaceInformation : INotifyPropertyChanged
     {
         public int Id { get; set; } = 1;
 

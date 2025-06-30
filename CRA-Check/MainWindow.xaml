@@ -9,9 +9,9 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="_New project"/>
-                <MenuItem Header="_Open project"/>
-                <MenuItem Header="_Exit"/>
+                <MenuItem Header="_New workspace"/>
+                <MenuItem Header="_Open workspace" Click="OpenWorkspace_OnClick"/>
+                <MenuItem Header="_Exit" Click="Exit_OnClick"/>
             </MenuItem>
             <MenuItem Header="_Tools">
                 <MenuItem Header="_Create SBOM"/>
@@ -23,7 +23,13 @@
             </MenuItem>
         </Menu>
         <Grid>
-
+            <ItemsControl ItemsSource="{Binding Softwares}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" FontSize="16" Margin="5"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </Grid>
     </DockPanel>
 </Window>

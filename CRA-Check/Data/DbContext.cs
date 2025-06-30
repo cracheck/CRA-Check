@@ -3,15 +3,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CRA_Check.Data
 {
-    public class AppDbContext : DbContext
+    public class DbContext : Microsoft.EntityFrameworkCore.DbContext
     {
         private readonly string _databaseFilename;
-        public DbSet<ProjectInformation> ProjectInformation { get; set; }
+        public DbSet<WorkspaceInformation> WorkspaceInformation { get; set; }
         public DbSet<Software> Softwares { get; set; }
         public DbSet<Release> Releases { get; set; }
         public DbSet<Vulnerability> Vulnerabilities { get; set; }
 
-        public AppDbContext(string databaseFilename)
+        public DbContext(string databaseFilename)
         {
             _databaseFilename = databaseFilename;
         }
