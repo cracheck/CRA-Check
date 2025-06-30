@@ -16,20 +16,20 @@ namespace CRA_Check.Data
             _databaseFilename = databaseFilename;
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder _OptionBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionBuilder)
         {
-            _OptionBuilder.UseSqlite($"Data Source={_databaseFilename}");
+            optionBuilder.UseSqlite($"Data Source={_databaseFilename}");
         }
 
-        protected override void OnModelCreating(ModelBuilder _ModelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            _ModelBuilder.Entity<Software>()
+            modelBuilder.Entity<Software>()
                 .HasMany(s => s.Release)
                 .WithOne(r => r.Software)
                 .HasForeignKey(r => r.SoftwareId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            _ModelBuilder.Entity<Release>()
+            modelBuilder.Entity<Release>()
                 .HasMany(r => r.Vulnerabilities)
                 .WithOne(v => v.Release)
                 .HasForeignKey(v => v.ReleaseId)
