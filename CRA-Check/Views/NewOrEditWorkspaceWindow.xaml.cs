@@ -39,10 +39,10 @@ namespace CRA_Check.Views
 
         public bool IsValid { get; private set; }
 
-        public NewOrEditWorkspaceWindow(string workspaceName = null)
+        public NewOrEditWorkspaceWindow(string name = null)
         {
-            WorkspaceName = workspaceName;
-            IsCreationMode = string.IsNullOrEmpty(workspaceName);
+            WorkspaceName = name;
+            IsCreationMode = string.IsNullOrEmpty(name);
             if (IsCreationMode)
             {
                 WindowTitle = "New workspace";

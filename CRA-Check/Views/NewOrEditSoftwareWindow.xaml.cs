@@ -21,25 +21,41 @@ namespace CRA_Check.Views
             }
         }
 
+        public bool IsCreationMode { get; private set; }
+
+        public string WindowTitle { get; private set; } = "Edit software";
+
         public bool IsValid { get; private set; }
 
-        public NewOrEditSoftwareWindow()
+        public NewOrEditSoftwareWindow(string name = null)
         {
+            SoftwareName = name;
+            IsCreationMode = string.IsNullOrEmpty(name);
+            if (IsCreationMode)
+            {
+                WindowTitle = "New software";
+            }
+
             InitializeComponent();
 
             DataContext = this;
         }
 
-        private void CreateSoftware_OnClick(object sender, RoutedEventArgs e)
+        private void Apply_OnClick(object sender, RoutedEventArgs e)
         {
             // TODO test unique
-            if (SoftwareName == "")
+            if (string.IsNullOrEmpty(SoftwareName))
             {
-                System.Windows.MessageBox.Show("The WorkspaceName cannot be empty", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.MessageBox.Show("The name cannot be empty", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             IsValid = true;
+            Close();
+        }
+
+        private void Cancel_OnClick(object sender, RoutedEventArgs e)
+        {
             Close();
         }
 

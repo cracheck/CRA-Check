@@ -104,7 +104,7 @@ namespace CRA_Check
                     Software software = control.Tag as Software;
                     if (software != null)
                     {
-                        software.Releases.Add(new Release() { Version = window.Version, Sbom = window.Sbom, Software = software});
+                        software.Releases.Add(new Release() { Version = window.Version, Sbom = window.Sbom, Software = software });
                     }
                 }
             }
@@ -118,6 +118,25 @@ namespace CRA_Check
             if (window.IsValid)
             {
                 MainViewModel.WorkspaceInformation.Name = window.WorkspaceName;
+            }
+        }
+
+        private void EditSoftware_OnClick(object sender, RoutedEventArgs e)
+        {
+            FrameworkElement control = sender as FrameworkElement;
+            if (control != null)
+            {
+                Software software = control.Tag as Software;
+                if (software != null)
+                {
+                    NewOrEditSoftwareWindow window = new NewOrEditSoftwareWindow(software.Name);
+                    window.ShowDialog();
+
+                    if (window.IsValid)
+                    {
+                        software.Name = window.SoftwareName;
+                    }
+                }
             }
         }
     }

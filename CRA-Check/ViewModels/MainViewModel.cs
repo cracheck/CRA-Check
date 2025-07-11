@@ -36,6 +36,7 @@ namespace CRA_Check.ViewModels
                     _softwares.CollectionChanged -= SoftwaresOnCollectionChanged;
                     foreach (var software in _softwares)
                     {
+                        software.PropertyChanged -= SoftwareOnPropertyChanged;
                         software.Releases.CollectionChanged -= ReleasesOnCollectionChanged;
                     }
                 }
@@ -45,6 +46,7 @@ namespace CRA_Check.ViewModels
                 _softwares.CollectionChanged += SoftwaresOnCollectionChanged;
                 foreach (var software in _softwares)
                 {
+                    software.PropertyChanged += SoftwareOnPropertyChanged;
                     software.Releases.CollectionChanged += ReleasesOnCollectionChanged;
                 }
 
@@ -103,6 +105,20 @@ namespace CRA_Check.ViewModels
             }
         }
 
+        private void SoftwareOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            Software software = sender as Software;
+
+            if (software != null)
+            {
+                using (DbContext dbContext = _databaseManager.GetContext())
+                {
+                    dbContext.Softwares.First(s => s.Id == software.Id).Name = software.Name;
+                    dbContext.SaveChanges();
+                }
+            }
+        }
+
         private void SoftwaresOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             using (DbContext dbContext = _databaseManager.GetContext())
@@ -116,6 +132,7 @@ namespace CRA_Check.ViewModels
                         {
                             dbContext.Softwares.Add(software);
                             software.Releases.CollectionChanged += ReleasesOnCollectionChanged;
+                            software.PropertyChanged += SoftwareOnPropertyChanged;
                         }
                     }
                 }
@@ -129,6 +146,7 @@ namespace CRA_Check.ViewModels
                         {
                             dbContext.Softwares.Add(software);
                             software.Releases.CollectionChanged -= ReleasesOnCollectionChanged;
+                            software.PropertyChanged -= SoftwareOnPropertyChanged;
                         }
                     }
                 }

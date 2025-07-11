@@ -47,7 +47,10 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="{Binding Name}" FontSize="16" Margin="5"/>
+                                <StackPanel Orientation="Horizontal" Grid.Column="0">
+                                    <TextBlock Text="{Binding Name}" FontSize="16" Margin="5"/>
+                                    <Button Tag="{Binding .}" Click="EditSoftware_OnClick">Edit</Button>
+                                </StackPanel>
                                 <Button Grid.Column="1" Click="AddRelease_OnClick" Tag="{Binding .}">Add release</Button>
                             </Grid>
                             <ItemsControl Grid.Row="1" Margin="40,0,0,0" ItemsSource="{Binding Releases}">
