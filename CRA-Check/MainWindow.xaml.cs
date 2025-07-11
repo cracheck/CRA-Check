@@ -76,7 +76,7 @@ namespace CRA_Check
 
             if (window.IsValid)
             {
-                MainViewModel.CreateWorkspace(window.Filename, window.Name);
+                MainViewModel.CreateWorkspace(window.Filename, window.WorkspaceName);
             }
         }
 

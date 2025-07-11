@@ -19,25 +19,18 @@ namespace CRA_Check.Views
             {
                 _workspaceName = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(Filename));
             }
         }
 
-        private string _path;
-        public string Path
-        {
-            get { return _path; }
-            set
-            {
-                _path = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(Filename));
-            }
-        }
-
+        private string _filename;
         public string Filename
         {
-            get { return System.IO.Path.Combine(Path, Name + ".cradb"); }
+            get { return _filename;}
+            private set
+            {
+                _filename=value;
+                OnPropertyChanged();
+            }
         }
 
         public bool IsValid { get; private set; }
@@ -46,39 +39,39 @@ namespace CRA_Check.Views
         {
             InitializeComponent();
 
-            Name = "";
-            Path = "";
-
             DataContext = this;
         }
 
         private void Browse_OnClick(object sender, RoutedEventArgs e)
         {
-            using (var dialog = new FolderBrowserDialog())
+            SaveFileDialog dialog = new SaveFileDialog()
             {
-                dialog.Description = "Select a folder";
-                dialog.UseDescriptionForTitle = true;
+                Title = "Save as",
+                Filter = "CRA DB file (*.cradb)|*.cradb",
+                FileName = WorkspaceName,
+                DefaultExt = ".cradb"
+            };
 
-                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                {
-                    Path = dialog.SelectedPath;
-                }
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                Filename = dialog.FileName;
             }
         }
 
         private void CreateWorkspace_OnClick(object sender, RoutedEventArgs e)
         {
-            if (!Directory.Exists(Path) || Path == "")
+            if (string.IsNullOrEmpty(WorkspaceName))
             {
-                System.Windows.MessageBox.Show("The folder does not exist", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.MessageBox.Show("The name cannot be empty", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            if (Name == "")
+            if (string.IsNullOrEmpty(Filename))
             {
-                System.Windows.MessageBox.Show("The WorkspaceName cannot be empty", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.MessageBox.Show("Please select a filename", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+
 
             IsValid = true;
             Close();

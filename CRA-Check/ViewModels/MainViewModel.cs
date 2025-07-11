@@ -72,12 +72,14 @@ namespace CRA_Check.ViewModels
 
         public void CreateWorkspace(string filename, string name)
         {
-            OpenWorkspace(filename);
+            _databaseManager.ChangeDatabase(filename);
             using (DbContext dbContext = _databaseManager.GetContext())
             {
                 dbContext.WorkspaceInformation.Add(new WorkspaceInformation() { Name = name });
                 dbContext.SaveChanges();
             }
+
+            OpenWorkspace(filename);
         }
 
         private void SoftwaresOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
