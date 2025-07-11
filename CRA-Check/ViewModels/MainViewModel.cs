@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using CRA_Check.Data;
 using CRA_Check.Models;
 using CRA_Check.Tools.SbomGenerators;
+using CRA_Check.Tools.VulnerabilityScanners;
 using Microsoft.EntityFrameworkCore;
 using DbContext = CRA_Check.Data.DbContext;
 
@@ -15,6 +16,8 @@ namespace CRA_Check.ViewModels
         private DatabaseManager _databaseManager;
 
         public ISbomGenerator SbomGenerator { get; private set; }
+        
+        public IVulnerabilityScanner VulnerabilityScanner { get; private set; }
 
         private WorkspaceInformation _workspaceInformation;
         public WorkspaceInformation WorkspaceInformation
@@ -60,6 +63,7 @@ namespace CRA_Check.ViewModels
         {
             _databaseManager = new DatabaseManager();
             SbomGenerator = new SyftSbomGenerator(@"D:\Syft.exe"); // TODO change
+            VulnerabilityScanner = new GrypeScanner(@"D:\Grype.exe"); // TODO change
             OpenWorkspace(@"d:\test.cradb"); // TODO Remove
         }
 
