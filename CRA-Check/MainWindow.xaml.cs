@@ -3,7 +3,6 @@ using CRA_Check.Data;
 using CRA_Check.Models;
 using CRA_Check.ViewModels;
 using CRA_Check.Views;
-using Microsoft.Win32;
 using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 
 namespace CRA_Check
@@ -38,9 +37,9 @@ namespace CRA_Check
             var release2 = new Release() { Version = new Version(3, 3), Sbom = "sbom2" };
             var release3 = new Release() { Version = new Version(4, 3), Sbom = "sbom3" };
 
-            software.Release.Add(release1);
-            software.Release.Add(release2);
-            software2.Release.Add(release3);
+            software.Releases.Add(release1);
+            software.Releases.Add(release2);
+            software2.Releases.Add(release3);
 
             db.WorkspaceInformation.Add(projectInformation);
             db.Softwares.Add(software);
@@ -89,6 +88,25 @@ namespace CRA_Check
             if (window.IsValid)
             {
                 MainViewModel.Softwares.Add(new Software() { Name = window.SoftwareName });
+            }
+        }
+
+        private void AddRelease_OnClick(object sender, RoutedEventArgs e)
+        {
+            NewOrEditReleaseWindow window = new NewOrEditReleaseWindow();
+            window.ShowDialog();
+
+            if (window.IsValid)
+            {
+                FrameworkElement control = sender as FrameworkElement;
+                if (control != null)
+                {
+                    Software software = control.Tag as Software;
+                    if (software != null)
+                    {
+                        software.Releases.Add(new Release() { Version = window.Version, Sbom = window.Sbom, Software = software});
+                    }
+                }
             }
         }
     }

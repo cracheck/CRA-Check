@@ -18,7 +18,7 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" Text="SoftwareName" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" Text="Name" VerticalAlignment="Center"/>
         <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding SoftwareName, UpdateSourceTrigger=PropertyChanged}" MinWidth="120"/>
 
         <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" Content="Create" Click="CreateSoftware_OnClick" HorizontalAlignment="Center"/>

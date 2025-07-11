@@ -20,7 +20,7 @@ namespace CRA_Check.Models
         }
 
         private ObservableCollection<Release> _releases;
-        public ObservableCollection<Release> Release
+        public ObservableCollection<Release> Releases
         {
             get { return _releases; }
             set
@@ -32,7 +32,7 @@ namespace CRA_Check.Models
 
         public Software()
         {
-            Release = new ObservableCollection<Release>();
+            Releases = new ObservableCollection<Release>();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

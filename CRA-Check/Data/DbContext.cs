@@ -24,7 +24,7 @@ namespace CRA_Check.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Software>()
-                .HasMany(s => s.Release)
+                .HasMany(s => s.Releases)
                 .WithOne(r => r.Software)
                 .HasForeignKey(r => r.SoftwareId)
                 .OnDelete(DeleteBehavior.Cascade);

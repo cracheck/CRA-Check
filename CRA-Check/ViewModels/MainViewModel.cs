@@ -4,6 +4,9 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using CRA_Check.Data;
 using CRA_Check.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using DbContext = CRA_Check.Data.DbContext;
 
 namespace CRA_Check.ViewModels
 {
@@ -31,11 +34,19 @@ namespace CRA_Check.ViewModels
                 if (_softwares != null)
                 {
                     _softwares.CollectionChanged -= SoftwaresOnCollectionChanged;
+                    foreach (var software in _softwares)
+                    {
+                        software.Releases.CollectionChanged -= ReleasesOnCollectionChanged;
+                    }
                 }
 
                 _softwares = value;
 
                 _softwares.CollectionChanged += SoftwaresOnCollectionChanged;
+                foreach (var software in _softwares)
+                {
+                    software.Releases.CollectionChanged += ReleasesOnCollectionChanged;
+                }
 
                 OnPropertyChanged();
             }
@@ -53,7 +64,8 @@ namespace CRA_Check.ViewModels
 
             using (DbContext dbContext = _databaseManager.GetContext())
             {
-                Softwares = new ObservableCollection<Software>(dbContext.Softwares.ToList());
+                Softwares = new ObservableCollection<Software>(dbContext.Softwares.Include(s => s.Releases).ToList());
+
                 WorkspaceInformation = dbContext.WorkspaceInformation.First();
             }
         }
@@ -74,21 +86,75 @@ namespace CRA_Check.ViewModels
             {
                 if (e.NewItems != null)
                 {
-                    foreach (var software in e.NewItems)
+                    foreach (var item in e.NewItems)
                     {
-                        dbContext.Softwares.Add(software as Software);
+                        Software software = item as Software;
+                        if (software != null)
+                        {
+                            dbContext.Softwares.Add(software);
+                            software.Releases.CollectionChanged += ReleasesOnCollectionChanged;
+                        }
                     }
                 }
 
                 if (e.OldItems != null)
                 {
-                    foreach (var software in e.OldItems)
+                    foreach (var item in e.OldItems)
                     {
-                        dbContext.Softwares.Remove(software as Software);
+                        Software software = item as Software;
+                        if (software != null)
+                        {
+                            dbContext.Softwares.Add(software);
+                            software.Releases.CollectionChanged -= ReleasesOnCollectionChanged;
+                        }
                     }
                 }
 
                 dbContext.SaveChanges();
+            }
+        }
+
+        private void ReleasesOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            using (DbContext dbContext = _databaseManager.GetContext())
+            {
+                if (e.NewItems != null)
+                {
+                    foreach (var item in e.NewItems)
+                    {
+                        Release release = item as Release;
+                        if (release != null)
+                        {
+                            var software = dbContext.Softwares.Include(s => s.Releases)
+                                .FirstOrDefault(s => s.Id == release.Software.Id);
+                            
+                            if (software != null)
+                            {
+                                software.Releases.Add(release);
+                            }
+                        }
+                    }
+
+                    if (e.OldItems != null)
+                    {
+                        foreach (var item in e.OldItems)
+                        {
+                            Release release = item as Release;
+                            if (release != null)
+                            {
+                                var software = dbContext.Softwares.Include(s => s.Releases)
+                                    .FirstOrDefault(s => s.Id == release.Software.Id);
+                            
+                                if (software != null)
+                                {
+                                    software.Releases.Remove(release);
+                                }
+                            }
+                        }
+                    }
+
+                    dbContext.SaveChanges();
+                }
             }
         }
 

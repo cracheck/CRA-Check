@@ -22,6 +22,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Views\NewOrEditReleaseWindow.xaml.cs">
+	    <SubType>Code</SubType>
+	  </Compile>
 	  <Compile Update="Views\NewOrEditSoftwareWindow.xaml.cs">
 	    <SubType>Code</SubType>
 	  </Compile>

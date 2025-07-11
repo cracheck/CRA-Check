@@ -1,0 +1,38 @@
+﻿<Window x:Class="CRA_Check.Views.NewOrEditReleaseWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CRA_Check.Views"
+        mc:Ignorable="d"
+        Title="New release"
+        SizeToContent="WidthAndHeight"
+        ResizeMode="NoResize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" Text="Version" VerticalAlignment="Center"/>
+        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+            <TextBox Margin="5" Text="{Binding VersionStr, UpdateSourceTrigger=PropertyChanged}" MinWidth="120"/>
+        </StackPanel>
+        <Button Grid.Row="0" Grid.Column="2" Click="ScanVersion_OnClick">Scan</Button>
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" Text="SBOM" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SbomStatus}"/>
+        <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal">
+            <Button Click="ImportSbom_OnClick">Import</Button>
+            <Button Click="ScanSbom_OnClick">Scan</Button>
+        </StackPanel>
+
+        <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" Content="Create" Click="CreateSoftware_OnClick" HorizontalAlignment="Center"/>
+    </Grid>
+</Window>
