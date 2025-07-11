@@ -3,6 +3,7 @@ using CRA_Check.Data;
 using CRA_Check.Models;
 using CRA_Check.ViewModels;
 using CRA_Check.Views;
+using MessageBox = System.Windows.Forms.MessageBox;
 using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 
 namespace CRA_Check
@@ -136,6 +137,25 @@ namespace CRA_Check
                     {
                         software.Name = window.SoftwareName;
                     }
+                }
+            }
+        }
+
+        private void DeleteSoftware_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Do you want to remove this software?", "Confirmation", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) !=
+                System.Windows.Forms.DialogResult.Yes)
+            {
+                return;
+            }
+
+            FrameworkElement control = sender as FrameworkElement;
+            if (control != null)
+            {
+                Software software = control.Tag as Software;
+                if (software != null)
+                {
+                    MainViewModel.Softwares.Remove(software);
                 }
             }
         }

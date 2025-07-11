@@ -50,6 +50,7 @@
                                 <StackPanel Orientation="Horizontal" Grid.Column="0">
                                     <TextBlock Text="{Binding Name}" FontSize="16" Margin="5"/>
                                     <Button Tag="{Binding .}" Click="EditSoftware_OnClick">Edit</Button>
+                                    <Button Tag="{Binding .}" Click="DeleteSoftware_OnClick">Delete</Button>
                                 </StackPanel>
                                 <Button Grid.Column="1" Click="AddRelease_OnClick" Tag="{Binding .}">Add release</Button>
                             </Grid>

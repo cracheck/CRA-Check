@@ -144,7 +144,7 @@ namespace CRA_Check.ViewModels
                         Software software = item as Software;
                         if (software != null)
                         {
-                            dbContext.Softwares.Add(software);
+                            dbContext.Softwares.Remove(software);
                             software.Releases.CollectionChanged -= ReleasesOnCollectionChanged;
                             software.PropertyChanged -= SoftwareOnPropertyChanged;
                         }
