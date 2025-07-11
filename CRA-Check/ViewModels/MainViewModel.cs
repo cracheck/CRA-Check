@@ -62,17 +62,29 @@ namespace CRA_Check.ViewModels
         {
             _databaseManager.ChangeDatabase(filename);
 
+            if (WorkspaceInformation != null)
+            {
+                CloseWorkspace();
+            }
+
             using (DbContext dbContext = _databaseManager.GetContext())
             {
                 Softwares = new ObservableCollection<Software>(dbContext.Softwares.Include(s => s.Releases).ToList());
 
                 WorkspaceInformation = dbContext.WorkspaceInformation.First();
+                WorkspaceInformation.PropertyChanged += WorkspaceInformationOnPropertyChanged;
             }
+        }
+
+        public void CloseWorkspace()
+        {
+            WorkspaceInformation.PropertyChanged -= WorkspaceInformationOnPropertyChanged;
         }
 
         public void CreateWorkspace(string filename, string name)
         {
             _databaseManager.ChangeDatabase(filename);
+
             using (DbContext dbContext = _databaseManager.GetContext())
             {
                 dbContext.WorkspaceInformation.Add(new WorkspaceInformation() { Name = name });
@@ -80,6 +92,15 @@ namespace CRA_Check.ViewModels
             }
 
             OpenWorkspace(filename);
+        }
+
+        private void WorkspaceInformationOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            using (DbContext dbContext = _databaseManager.GetContext())
+            {
+                dbContext.WorkspaceInformation.First().Name = WorkspaceInformation.Name;
+                dbContext.SaveChanges();
+            }
         }
 
         private void SoftwaresOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -129,7 +150,7 @@ namespace CRA_Check.ViewModels
                         {
                             var software = dbContext.Softwares.Include(s => s.Releases)
                                 .FirstOrDefault(s => s.Id == release.Software.Id);
-                            
+
                             if (software != null)
                             {
                                 software.Releases.Add(release);
@@ -146,7 +167,7 @@ namespace CRA_Check.ViewModels
                             {
                                 var software = dbContext.Softwares.Include(s => s.Releases)
                                     .FirstOrDefault(s => s.Id == release.Software.Id);
-                            
+
                                 if (software != null)
                                 {
                                     software.Releases.Remove(release);

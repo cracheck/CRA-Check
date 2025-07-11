@@ -109,5 +109,16 @@ namespace CRA_Check
                 }
             }
         }
+
+        private void EditWorkspace_OnClick(object sender, RoutedEventArgs e)
+        {
+            NewOrEditWorkspaceWindow window = new NewOrEditWorkspaceWindow(MainViewModel.WorkspaceInformation.Name);
+            window.ShowDialog();
+
+            if (window.IsValid)
+            {
+                MainViewModel.WorkspaceInformation.Name = window.WorkspaceName;
+            }
+        }
     }
 }

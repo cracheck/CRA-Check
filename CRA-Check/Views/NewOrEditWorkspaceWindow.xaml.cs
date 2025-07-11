@@ -25,18 +25,29 @@ namespace CRA_Check.Views
         private string _filename;
         public string Filename
         {
-            get { return _filename;}
+            get { return _filename; }
             private set
             {
-                _filename=value;
+                _filename = value;
                 OnPropertyChanged();
             }
         }
 
+        public bool IsCreationMode { get; private set; }
+
+        public string WindowTitle { get; private set; } = "Edit workspace";
+
         public bool IsValid { get; private set; }
 
-        public NewOrEditWorkspaceWindow()
+        public NewOrEditWorkspaceWindow(string workspaceName = null)
         {
+            WorkspaceName = workspaceName;
+            IsCreationMode = string.IsNullOrEmpty(workspaceName);
+            if (IsCreationMode)
+            {
+                WindowTitle = "New workspace";
+            }
+
             InitializeComponent();
 
             DataContext = this;
@@ -58,7 +69,7 @@ namespace CRA_Check.Views
             }
         }
 
-        private void CreateWorkspace_OnClick(object sender, RoutedEventArgs e)
+        private void Apply_OnClick(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(WorkspaceName))
             {
@@ -66,7 +77,7 @@ namespace CRA_Check.Views
                 return;
             }
 
-            if (string.IsNullOrEmpty(Filename))
+            if (IsCreationMode && string.IsNullOrEmpty(Filename))
             {
                 System.Windows.MessageBox.Show("Please select a filename", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -74,6 +85,11 @@ namespace CRA_Check.Views
 
 
             IsValid = true;
+            Close();
+        }
+
+        private void Cancel_OnClick(object sender, RoutedEventArgs e)
+        {
             Close();
         }
 
