@@ -33,6 +33,9 @@
             <Button Click="ScanSbom_OnClick">Scan</Button>
         </StackPanel>
 
-        <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" Content="Create" Click="CreateSoftware_OnClick" HorizontalAlignment="Center"/>
+        <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
+            <Button Margin="5" Content="Cancel" Click="Cancel_OnClick" HorizontalAlignment="Left"/>
+            <Button Margin="5" Content="Create" Click="Create_OnClick" HorizontalAlignment="Right"/>
+        </Grid>
     </Grid>
 </Window>

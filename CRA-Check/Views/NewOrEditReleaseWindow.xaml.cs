@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using CRA_Check.Tools.SbomGenerators;
 
 
 namespace CRA_Check.Views
@@ -12,6 +13,8 @@ namespace CRA_Check.Views
     /// </summary>
     public partial class NewOrEditReleaseWindow : Window, INotifyPropertyChanged
     {
+        private ISbomGenerator _sbomGenerator;
+
         private string _versionStr;
         public string VersionStr
         {
@@ -41,14 +44,22 @@ namespace CRA_Check.Views
 
         public bool IsValid { get; private set; }
 
-        public NewOrEditReleaseWindow()
+        public NewOrEditReleaseWindow(ISbomGenerator sbomGenerator)
         {
+            _sbomGenerator = sbomGenerator;
+
             InitializeComponent();
 
             DataContext = this;
         }
 
-        private void CreateSoftware_OnClick(object sender, RoutedEventArgs e)
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void Create_OnClick(object sender, RoutedEventArgs e)
         {
             // TODO test unique
             Version version;
@@ -73,10 +84,9 @@ namespace CRA_Check.Views
             Close();
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void Cancel_OnClick(object sender, RoutedEventArgs e)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            Close();
         }
 
         private void ScanVersion_OnClick(object sender, RoutedEventArgs e)
@@ -119,9 +129,16 @@ namespace CRA_Check.Views
             }
         }
 
-        private void ScanSbom_OnClick(object sender, RoutedEventArgs e)
+        private async void ScanSbom_OnClick(object sender, RoutedEventArgs e)
         {
-            // TODO with Syft
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
+
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                // TODO change. Add a progress bar
+                Sbom = await _sbomGenerator.GenerateSbom(dialog.SelectedPath); 
+                SbomStatus = "OK";
+            }
         }
     }
 }

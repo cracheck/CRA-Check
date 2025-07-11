@@ -94,7 +94,7 @@ namespace CRA_Check
 
         private void AddRelease_OnClick(object sender, RoutedEventArgs e)
         {
-            NewOrEditReleaseWindow window = new NewOrEditReleaseWindow();
+            NewOrEditReleaseWindow window = new NewOrEditReleaseWindow(MainViewModel.SbomGenerator);
             window.ShowDialog();
 
             if (window.IsValid)

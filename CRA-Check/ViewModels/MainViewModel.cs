@@ -4,8 +4,8 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using CRA_Check.Data;
 using CRA_Check.Models;
+using CRA_Check.Tools.SbomGenerators;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using DbContext = CRA_Check.Data.DbContext;
 
 namespace CRA_Check.ViewModels
@@ -13,6 +13,8 @@ namespace CRA_Check.ViewModels
     public class MainViewModel : INotifyPropertyChanged
     {
         private DatabaseManager _databaseManager;
+
+        public ISbomGenerator SbomGenerator { get; private set; }
 
         private WorkspaceInformation _workspaceInformation;
         public WorkspaceInformation WorkspaceInformation
@@ -57,6 +59,7 @@ namespace CRA_Check.ViewModels
         public MainViewModel()
         {
             _databaseManager = new DatabaseManager();
+            SbomGenerator = new SyftSbomGenerator(@"D:\Syft.exe"); // TODO change
             OpenWorkspace(@"d:\test.cradb"); // TODO Remove
         }
 
