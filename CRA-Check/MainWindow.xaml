@@ -23,7 +23,15 @@
             </MenuItem>
         </Menu>
         <Grid>
-            <ItemsControl ItemsSource="{Binding Softwares}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <TextBlock Text="{Binding WorkspaceInformation.Name}"/>
+                <Button HorizontalAlignment="Right" Click="AddSoftware_OnClick">Add software</Button>
+            </Grid>
+            <ItemsControl Grid.Row="1" ItemsSource="{Binding Softwares}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Name}" FontSize="16" Margin="5"/>

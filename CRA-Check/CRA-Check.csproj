@@ -21,4 +21,10 @@
 		<ProjectReference Include="..\libs\SyftCLIWrapper\SyftCLIWrapper\SyftCLIWrapper.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Compile Update="Views\NewOrEditSoftwareWindow.xaml.cs">
+	    <SubType>Code</SubType>
+	  </Compile>
+	</ItemGroup>
+
 </Project>

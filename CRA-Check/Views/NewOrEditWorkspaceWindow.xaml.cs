@@ -7,9 +7,9 @@ using System.Windows;
 namespace CRA_Check.Views
 {
     /// <summary>
-    /// Interaction logic for NewWorkspaceWindow.xaml
+    /// Interaction logic for NewOrEditWorkspaceWindow.xaml
     /// </summary>
-    public partial class NewWorkspaceWindow : Window, INotifyPropertyChanged
+    public partial class NewOrEditWorkspaceWindow : Window, INotifyPropertyChanged
     {
         private string _workspaceName;
         public string WorkspaceName
@@ -19,35 +19,35 @@ namespace CRA_Check.Views
             {
                 _workspaceName = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(WorkspaceFilename));
+                OnPropertyChanged(nameof(Filename));
             }
         }
 
-        private string _workspacePath;
-        public string WorkspacePath
+        private string _path;
+        public string Path
         {
-            get { return _workspacePath; }
+            get { return _path; }
             set
             {
-                _workspacePath = value;
+                _path = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(WorkspaceFilename));
+                OnPropertyChanged(nameof(Filename));
             }
         }
 
-        public string WorkspaceFilename
+        public string Filename
         {
-            get { return Path.Combine(WorkspacePath, WorkspaceName + ".cradb"); }
+            get { return System.IO.Path.Combine(Path, Name + ".cradb"); }
         }
 
         public bool IsValid { get; private set; }
 
-        public NewWorkspaceWindow()
+        public NewOrEditWorkspaceWindow()
         {
             InitializeComponent();
 
-            WorkspaceName = "";
-            WorkspacePath = "";
+            Name = "";
+            Path = "";
 
             DataContext = this;
         }
@@ -61,22 +61,22 @@ namespace CRA_Check.Views
 
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    WorkspacePath = dialog.SelectedPath;
+                    Path = dialog.SelectedPath;
                 }
             }
         }
 
         private void CreateWorkspace_OnClick(object sender, RoutedEventArgs e)
         {
-            if (!Directory.Exists(WorkspacePath) || WorkspacePath == "")
+            if (!Directory.Exists(Path) || Path == "")
             {
                 System.Windows.MessageBox.Show("The folder does not exist", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            if (WorkspaceName == "")
+            if (Name == "")
             {
-                System.Windows.MessageBox.Show("The name cannot be empty", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.MessageBox.Show("The WorkspaceName cannot be empty", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 

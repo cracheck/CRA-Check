@@ -54,7 +54,7 @@ namespace CRA_Check
             {
                 Title = "Choose a workspace",
                 Filter = "CRA workspace (*.cradb)|*.cradb",
-                Multiselect = false 
+                Multiselect = false
             };
 
             var result = openFileDialog.ShowDialog();
@@ -72,12 +72,23 @@ namespace CRA_Check
 
         private void NewWorkspace_OnClick(object sender, RoutedEventArgs e)
         {
-            NewWorkspaceWindow window = new NewWorkspaceWindow();
+            NewOrEditWorkspaceWindow window = new NewOrEditWorkspaceWindow();
             window.ShowDialog();
 
             if (window.IsValid)
             {
-                MainViewModel.CreateWorkspace(window.WorkspaceFilename, window.WorkspaceName);
+                MainViewModel.CreateWorkspace(window.Filename, window.Name);
+            }
+        }
+
+        private void AddSoftware_OnClick(object sender, RoutedEventArgs e)
+        {
+            NewOrEditSoftwareWindow window = new NewOrEditSoftwareWindow();
+            window.ShowDialog();
+
+            if (window.IsValid)
+            {
+                MainViewModel.Softwares.Add(new Software() { Name = window.SoftwareName });
             }
         }
     }
