@@ -57,7 +57,16 @@
                             <ItemsControl Grid.Row="1" Margin="40,0,0,0" ItemsSource="{Binding Releases}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding VersionStr}"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="{Binding VersionStr}"/>
+                                            <StackPanel Orientation="Horizontal" Grid.Column="1">
+                                                <Button Click="ScanVulnerability_OnClick" Tag="{Binding .}">SCAN</Button>
+                                            </StackPanel>
+                                        </Grid>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>

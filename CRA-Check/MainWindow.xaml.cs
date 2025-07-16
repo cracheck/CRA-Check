@@ -159,5 +159,24 @@ namespace CRA_Check
                 }
             }
         }
+
+        private async void ScanVulnerability_OnClick(object sender, RoutedEventArgs e)
+        {
+            FrameworkElement control = sender as FrameworkElement;
+            if (control != null)
+            {
+                Release release = control.Tag as Release;
+                if (release != null)
+                {
+                    LoadingWindow window = new LoadingWindow();
+
+                    window.Show();
+
+                    string vulnerabilities = await MainViewModel.VulnerabilityScanner.ScanVulnerability(release);
+
+                    window.Close();
+                }
+            }
+        }
     }
 }
