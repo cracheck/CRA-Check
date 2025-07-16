@@ -68,8 +68,20 @@
                                                         <ColumnDefinition Width="*"/>
                                                         <ColumnDefinition Width="Auto"/>
                                                     </Grid.ColumnDefinitions>
-
-                                                    <TextBlock Grid.Column="0" Text="{Binding VersionStr}"/>
+                                                    <Grid.Style>
+                                                        <Style TargetType="Grid">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                                                    <Setter Property="Background" Value="Gray"></Setter>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                            <Setter Property="Background" Value="DarkGray"></Setter>
+                                                        </Style>
+                                                    </Grid.Style>
+                                                    <StackPanel Orientation="Horizontal" Grid.Column="0">
+                                                        <CheckBox IsChecked="{Binding IsActive}"/>
+                                                        <TextBlock Text="{Binding VersionStr}"/>
+                                                    </StackPanel>
                                                     <StackPanel Orientation="Horizontal" Grid.Column="1">
                                                         <Button Click="ScanVulnerability_OnClick" Tag="{Binding .}">SCAN</Button>
                                                     </StackPanel>

@@ -72,6 +72,7 @@ namespace CRA_Check.Models
         public Release()
         {
             Vulnerabilities = new ObservableCollection<Vulnerability>();
+            IsActive = true;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
