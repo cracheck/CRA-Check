@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics.Eventing.Reader;
 using System.Runtime.CompilerServices;
 using CRA_Check.Data;
 using CRA_Check.Models;
@@ -16,7 +17,7 @@ namespace CRA_Check.ViewModels
         private DatabaseManager _databaseManager;
 
         public ISbomGenerator SbomGenerator { get; private set; }
-        
+
         public IVulnerabilityScanner VulnerabilityScanner { get; private set; }
 
         private WorkspaceInformation _workspaceInformation;
@@ -43,6 +44,11 @@ namespace CRA_Check.ViewModels
                     {
                         software.PropertyChanged -= SoftwareOnPropertyChanged;
                         software.Releases.CollectionChanged -= ReleasesOnCollectionChanged;
+
+                        foreach (var release in software.Releases)
+                        {
+                            release.PropertyChanged -= ReleaseOnPropertyChanged;
+                        }
                     }
                 }
 
@@ -53,6 +59,11 @@ namespace CRA_Check.ViewModels
                 {
                     software.PropertyChanged += SoftwareOnPropertyChanged;
                     software.Releases.CollectionChanged += ReleasesOnCollectionChanged;
+
+                    foreach (var release in software.Releases)
+                    {
+                        release.PropertyChanged += ReleaseOnPropertyChanged;
+                    }
                 }
 
                 OnPropertyChanged();
@@ -78,7 +89,10 @@ namespace CRA_Check.ViewModels
 
             using (DbContext dbContext = _databaseManager.GetContext())
             {
-                Softwares = new ObservableCollection<Software>(dbContext.Softwares.Include(s => s.Releases).ToList());
+                Softwares = new ObservableCollection<Software>(dbContext.Softwares
+                    .Include(s => s.Releases)
+                    .ThenInclude(r => r.Vulnerabilities)
+                    .ThenInclude(v => v.Ratings).ToList());
 
                 WorkspaceInformation = dbContext.WorkspaceInformation.First();
                 WorkspaceInformation.PropertyChanged += WorkspaceInformationOnPropertyChanged;
@@ -138,8 +152,14 @@ namespace CRA_Check.ViewModels
                         if (software != null)
                         {
                             dbContext.Softwares.Add(software);
+
                             software.Releases.CollectionChanged += ReleasesOnCollectionChanged;
                             software.PropertyChanged += SoftwareOnPropertyChanged;
+
+                            foreach (var release in software.Releases)
+                            {
+                                release.PropertyChanged += ReleaseOnPropertyChanged;
+                            }
                         }
                     }
                 }
@@ -152,8 +172,14 @@ namespace CRA_Check.ViewModels
                         if (software != null)
                         {
                             dbContext.Softwares.Remove(software);
+
                             software.Releases.CollectionChanged -= ReleasesOnCollectionChanged;
                             software.PropertyChanged -= SoftwareOnPropertyChanged;
+
+                            foreach (var release in software.Releases)
+                            {
+                                release.PropertyChanged -= ReleaseOnPropertyChanged;
+                            }
                         }
                     }
                 }
@@ -181,6 +207,8 @@ namespace CRA_Check.ViewModels
                                 software.Releases.Add(release);
                             }
                         }
+
+                        release.PropertyChanged += ReleaseOnPropertyChanged;
                     }
 
                     if (e.OldItems != null)
@@ -198,6 +226,49 @@ namespace CRA_Check.ViewModels
                                     software.Releases.Remove(release);
                                 }
                             }
+
+                            release.PropertyChanged -= ReleaseOnPropertyChanged;
+                        }
+                    }
+
+                    dbContext.SaveChanges();
+                }
+            }
+        }
+
+        private void ReleaseOnPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            Release newRelease = sender as Release;
+
+            if (newRelease != null)
+            {
+                using (DbContext dbContext = _databaseManager.GetContext())
+                {
+                    Release release = dbContext.Releases
+                        .Include(r => r.Vulnerabilities)
+                        .ThenInclude(v => v.Ratings)
+                        .FirstOrDefault(r => r.Id == newRelease.Id);
+
+                    if (release != null)
+                    {
+                        if (e.PropertyName == nameof(Release.Vulnerabilities))
+                        {
+                            dbContext.Vulnerabilities.RemoveRange(release.Vulnerabilities);
+                            
+                            foreach (var vulnerability in newRelease.Vulnerabilities)
+                            {
+                                vulnerability.Release = release;
+                                foreach (var rating in vulnerability.Ratings)
+                                {
+                                    rating.Vulnerability = vulnerability;
+                                }
+                            }
+
+                            dbContext.Vulnerabilities.AddRange(newRelease.Vulnerabilities);
+                        }
+                        else
+                        {
+                            dbContext.Entry(release).CurrentValues.SetValues(newRelease);
                         }
                     }
 

@@ -55,6 +55,12 @@ namespace CRA_Check.Models
             }
         }
 
+        public Rating()
+        {
+            Score = -1;
+            Vector = "";
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

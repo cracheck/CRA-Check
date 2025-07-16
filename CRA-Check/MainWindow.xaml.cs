@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections.ObjectModel;
+using System.Windows;
 using CRA_Check.Data;
 using CRA_Check.Models;
 using CRA_Check.ViewModels;
@@ -173,6 +174,9 @@ namespace CRA_Check
                     window.Show();
 
                     var vulnerabilities = await MainViewModel.VulnerabilityScanner.ScanVulnerability(release);
+
+                    release.LastScan = DateTime.Now;
+                    release.Vulnerabilities = new ObservableCollection<Vulnerability>(vulnerabilities);
 
                     window.Close();
                 }
