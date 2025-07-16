@@ -3,25 +3,13 @@ using System.Runtime.CompilerServices;
 
 namespace CRA_Check.Models
 {
-    public class Cvss : INotifyPropertyChanged
+    public class Rating : INotifyPropertyChanged
     {
         public int Id { get; set; }
 
         public Vulnerability Vulnerability { get; set; }
 
         public int VulnerabilityId { get; set; }
-
-
-        private string _version;
-        public string Version
-        {
-            get { return _version; }
-            set
-            {
-                _version = value;
-                OnPropertyChanged();
-            }
-        }
 
         private string _vector;
         public string Vector
@@ -34,52 +22,37 @@ namespace CRA_Check.Models
             }
         }
 
-        private string _source;
-        public string Source
+        private string _method;
+        public string Method
         {
-            get { return _source; }
+            get { return _method; }
             set
             {
-                _source = value;
+                _method = value;
                 OnPropertyChanged();
             }
         }
 
-        private double _baseScore;
-        public double BaseScore
+        private double _Score;
+        public double Score
         {
-            get { return _baseScore; }
+            get { return _Score; }
             set
             {
-                _baseScore = value;
+                _Score = value;
                 OnPropertyChanged();
             }
         }
 
-        private double _impactScore;
-        public double ImpactScore
+        private SeverityLevel _severity;
+        public SeverityLevel Severity
         {
-            get { return _impactScore; }
+            get { return _severity; }
             set
             {
-                _impactScore = value;
+                _severity = value;
                 OnPropertyChanged();
             }
-        }
-
-        private double _exploitabilityScore;
-        public double ExploitabilityScore
-        {
-            get { return _exploitabilityScore; }
-            set
-            {
-                _exploitabilityScore = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Cvss()
-        {
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

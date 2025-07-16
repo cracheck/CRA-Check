@@ -2,11 +2,11 @@
 {
     public enum SeverityLevel
     {
-        Low,
-        Negligible,
-        Medium,
-        High,
-        Critical,
-        Unknown
+        low,
+        negligible,
+        medium,
+        high,
+        critical,
+        unknown
     }
 }

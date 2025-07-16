@@ -10,7 +10,7 @@ namespace CRA_Check.Data
         public DbSet<Software> Softwares { get; set; }
         public DbSet<Release> Releases { get; set; }
         public DbSet<Vulnerability> Vulnerabilities { get; set; }
-        public DbSet<Cvss> Cvsses { get; set; }
+        public DbSet<Rating> Ratings { get; set; }
 
         public DbContext(string databaseFilename)
         {
@@ -37,7 +37,7 @@ namespace CRA_Check.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Vulnerability>()
-                .HasMany(r => r.CvssList)
+                .HasMany(r => r.Ratings)
                 .WithOne(v => v.Vulnerability)
                 .HasForeignKey(v => v.VulnerabilityId)
                 .OnDelete(DeleteBehavior.Cascade);
