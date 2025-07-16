@@ -54,12 +54,6 @@ namespace CRA_Check.Views
             DataContext = this;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         private void Create_OnClick(object sender, RoutedEventArgs e)
         {
             // TODO test unique
@@ -140,6 +134,12 @@ namespace CRA_Check.Views
                 Sbom = await _sbomGenerator.GenerateSbom(dialog.SelectedPath); 
                 SbomStatus = "OK";
             }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

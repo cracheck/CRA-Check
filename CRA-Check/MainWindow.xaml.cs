@@ -1,10 +1,12 @@
 ﻿using System.Collections.ObjectModel;
+using System.Reflection;
 using System.Windows;
 using CRA_Check.Data;
 using CRA_Check.Models;
 using CRA_Check.ViewModels;
 using CRA_Check.Views;
 using MahApps.Metro.Controls;
+using Application = System.Windows.Application;
 using MessageBox = System.Windows.Forms.MessageBox;
 using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 
@@ -182,6 +184,17 @@ namespace CRA_Check
                     window.Close();
                 }
             }
+        }
+
+        private async void About_OnClick(object sender, RoutedEventArgs e)
+        {
+            AboutWindow window = new AboutWindow() { Owner = this };
+            
+            window.Version = Assembly.GetExecutingAssembly().GetName().Version;
+            window.SyftVersion = await MainViewModel.SbomGenerator.GetVersion();
+            window.GrypeVersion = await MainViewModel.VulnerabilityScanner.GetVersion();
+            
+            window.ShowDialog();
         }
     }
 }

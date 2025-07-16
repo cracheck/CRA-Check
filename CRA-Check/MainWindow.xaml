@@ -21,7 +21,7 @@
                 <MenuItem Header="_Exit"/>
             </MenuItem>
             <MenuItem Header="?">
-                <MenuItem Header="_About"/>
+                <MenuItem Header="_About" Click="About_OnClick"/>
             </MenuItem>
         </Menu>
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
