@@ -172,7 +172,7 @@ namespace CRA_Check
 
                     window.Show();
 
-                    string vulnerabilities = await MainViewModel.VulnerabilityScanner.ScanVulnerability(release);
+                    var vulnerabilities = await MainViewModel.VulnerabilityScanner.ScanVulnerability(release);
 
                     window.Close();
                 }

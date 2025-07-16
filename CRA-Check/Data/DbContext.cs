@@ -10,6 +10,7 @@ namespace CRA_Check.Data
         public DbSet<Software> Softwares { get; set; }
         public DbSet<Release> Releases { get; set; }
         public DbSet<Vulnerability> Vulnerabilities { get; set; }
+        public DbSet<Cvss> Cvsses { get; set; }
 
         public DbContext(string databaseFilename)
         {
@@ -33,6 +34,12 @@ namespace CRA_Check.Data
                 .HasMany(r => r.Vulnerabilities)
                 .WithOne(v => v.Release)
                 .HasForeignKey(v => v.ReleaseId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Vulnerability>()
+                .HasMany(r => r.CvssList)
+                .WithOne(v => v.Vulnerability)
+                .HasForeignKey(v => v.VulnerabilityId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
