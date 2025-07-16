@@ -4,6 +4,7 @@ using CRA_Check.Data;
 using CRA_Check.Models;
 using CRA_Check.ViewModels;
 using CRA_Check.Views;
+using MahApps.Metro.Controls;
 using MessageBox = System.Windows.Forms.MessageBox;
 using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 
@@ -12,7 +13,7 @@ namespace CRA_Check
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
         public MainViewModel MainViewModel { get; private set; }
 
@@ -73,7 +74,7 @@ namespace CRA_Check
 
         private void NewWorkspace_OnClick(object sender, RoutedEventArgs e)
         {
-            NewOrEditWorkspaceWindow window = new NewOrEditWorkspaceWindow();
+            NewOrEditWorkspaceWindow window = new NewOrEditWorkspaceWindow() { Owner = this };
             window.ShowDialog();
 
             if (window.IsValid)
@@ -84,7 +85,7 @@ namespace CRA_Check
 
         private void AddSoftware_OnClick(object sender, RoutedEventArgs e)
         {
-            NewOrEditSoftwareWindow window = new NewOrEditSoftwareWindow();
+            NewOrEditSoftwareWindow window = new NewOrEditSoftwareWindow() { Owner = this };
             window.ShowDialog();
 
             if (window.IsValid)
@@ -95,7 +96,7 @@ namespace CRA_Check
 
         private void AddRelease_OnClick(object sender, RoutedEventArgs e)
         {
-            NewOrEditReleaseWindow window = new NewOrEditReleaseWindow(MainViewModel.SbomGenerator);
+            NewOrEditReleaseWindow window = new NewOrEditReleaseWindow(MainViewModel.SbomGenerator) { Owner = this };
             window.ShowDialog();
 
             if (window.IsValid)
@@ -114,7 +115,7 @@ namespace CRA_Check
 
         private void EditWorkspace_OnClick(object sender, RoutedEventArgs e)
         {
-            NewOrEditWorkspaceWindow window = new NewOrEditWorkspaceWindow(MainViewModel.WorkspaceInformation.Name);
+            NewOrEditWorkspaceWindow window = new NewOrEditWorkspaceWindow(MainViewModel.WorkspaceInformation.Name) { Owner = this };
             window.ShowDialog();
 
             if (window.IsValid)

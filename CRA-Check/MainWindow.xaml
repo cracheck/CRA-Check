@@ -1,11 +1,13 @@
-﻿<Window x:Class="CRA_Check.MainWindow"
+﻿<mah:MetroWindow x:Class="CRA_Check.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CRA_Check"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
-        Title="CRA-Check" Height="450" Width="800">
+        Title="CRA-Check"
+        WindowStartupLocation="CenterScreen">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
@@ -113,4 +115,4 @@
             </Grid>
         </ScrollViewer>
     </DockPanel>
-</Window>
+</mah:MetroWindow>

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
-using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using MahApps.Metro.Controls;
 
 
 namespace CRA_Check.Views
@@ -9,7 +9,7 @@ namespace CRA_Check.Views
     /// <summary>
     /// Interaction logic for NewOrEditWorkspaceWindow.xaml
     /// </summary>
-    public partial class NewOrEditWorkspaceWindow : Window, INotifyPropertyChanged
+    public partial class NewOrEditWorkspaceWindow : MetroWindow, INotifyPropertyChanged
     {
         private string _workspaceName;
         public string WorkspaceName

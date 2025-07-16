@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using CRA_Check.Tools.SbomGenerators;
+using MahApps.Metro.Controls;
 
 
 namespace CRA_Check.Views
@@ -11,7 +12,7 @@ namespace CRA_Check.Views
     /// <summary>
     /// Interaction logic for NewOrEditReleaseWindow.xaml
     /// </summary>
-    public partial class NewOrEditReleaseWindow : Window, INotifyPropertyChanged
+    public partial class NewOrEditReleaseWindow : MetroWindow, INotifyPropertyChanged
     {
         private ISbomGenerator _sbomGenerator;
 

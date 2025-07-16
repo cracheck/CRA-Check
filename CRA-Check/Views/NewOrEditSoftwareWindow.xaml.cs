@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using MahApps.Metro.Controls;
 
 
 namespace CRA_Check.Views
@@ -8,7 +9,7 @@ namespace CRA_Check.Views
     /// <summary>
     /// Interaction logic for NewOrEditSoftwareWindow.xaml
     /// </summary>
-    public partial class NewOrEditSoftwareWindow : Window, INotifyPropertyChanged
+    public partial class NewOrEditSoftwareWindow : MetroWindow, INotifyPropertyChanged
     {
         private string _softwareName;
         public string SoftwareName

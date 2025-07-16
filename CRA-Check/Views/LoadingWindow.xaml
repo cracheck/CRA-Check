@@ -1,13 +1,15 @@
-﻿<Window x:Class="CRA_Check.Views.LoadingWindow"
+﻿<mah:MetroWindow x:Class="CRA_Check.Views.LoadingWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CRA_Check.Views"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
         Title="LoadingWindow" Topmost="True"
-        SizeToContent="WidthAndHeight">
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterOwner">
     <Grid>
         <TextBlock>Wait...</TextBlock>
     </Grid>
-</Window>
+</mah:MetroWindow>
