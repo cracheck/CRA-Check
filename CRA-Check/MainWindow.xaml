@@ -22,58 +22,83 @@
                 <MenuItem Header="_About"/>
             </MenuItem>
         </Menu>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding WorkspaceInformation.Name}"/>
-                    <Button HorizontalAlignment="Right" Click="EditWorkspace_OnClick">Edit</Button>
-                </StackPanel>
-                <Button HorizontalAlignment="Right" Click="AddSoftware_OnClick">Add software</Button>
-            </Grid>
-            <ItemsControl Grid.Row="1" ItemsSource="{Binding Softwares}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Grid Grid.Row="0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Orientation="Horizontal" Grid.Column="0">
-                                    <TextBlock Text="{Binding Name}" FontSize="16" Margin="5"/>
-                                    <Button Tag="{Binding .}" Click="EditSoftware_OnClick">Edit</Button>
-                                    <Button Tag="{Binding .}" Click="DeleteSoftware_OnClick">Delete</Button>
-                                </StackPanel>
-                                <Button Grid.Column="1" Click="AddRelease_OnClick" Tag="{Binding .}">Add release</Button>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding WorkspaceInformation.Name}"/>
+                        <Button HorizontalAlignment="Right" Click="EditWorkspace_OnClick">Edit</Button>
+                    </StackPanel>
+                    <Button HorizontalAlignment="Right" Click="AddSoftware_OnClick">Add software</Button>
+                </Grid>
+                <ItemsControl Grid.Row="1" ItemsSource="{Binding Softwares}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Orientation="Horizontal" Grid.Column="0">
+                                        <TextBlock Text="{Binding Name}" FontSize="16" Margin="5"/>
+                                        <Button Tag="{Binding .}" Click="EditSoftware_OnClick">Edit</Button>
+                                        <Button Tag="{Binding .}" Click="DeleteSoftware_OnClick">Delete</Button>
+                                    </StackPanel>
+                                    <Button Grid.Column="1" Click="AddRelease_OnClick" Tag="{Binding .}">Add release</Button>
+                                </Grid>
+                                <ItemsControl Grid.Row="1" Margin="40,0,0,0" ItemsSource="{Binding Releases}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <Grid Grid.Row="0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <TextBlock Grid.Column="0" Text="{Binding VersionStr}"/>
+                                                    <StackPanel Orientation="Horizontal" Grid.Column="1">
+                                                        <Button Click="ScanVulnerability_OnClick" Tag="{Binding .}">SCAN</Button>
+                                                    </StackPanel>
+                                                </Grid>
+                                                <ItemsControl Grid.Row="1" Margin="80,0,0,0" ItemsSource="{Binding Vulnerabilities}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Grid>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <TextBlock Margin="5">ID:</TextBlock>
+                                                                    <TextBlock Margin="5" Text="{Binding VulnerabilityId}"/>
+                                                                    <TextBlock Margin="5">Score:</TextBlock>
+                                                                    <TextBlock Margin="5" Text="{Binding Ratings[0].Score}"/>
+                                                                    <TextBlock Margin="5">Severity:</TextBlock>
+                                                                    <TextBlock Margin="5" Text="{Binding Ratings[0].Severity}"/>
+                                                                </StackPanel>
+                                                            </Grid>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
                             </Grid>
-                            <ItemsControl Grid.Row="1" Margin="40,0,0,0" ItemsSource="{Binding Releases}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Grid.Column="0" Text="{Binding VersionStr}"/>
-                                            <StackPanel Orientation="Horizontal" Grid.Column="1">
-                                                <Button Click="ScanVulnerability_OnClick" Tag="{Binding .}">SCAN</Button>
-                                            </StackPanel>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </Grid>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </ScrollViewer>
     </DockPanel>
 </Window>
