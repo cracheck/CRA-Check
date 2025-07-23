@@ -3,9 +3,41 @@ using CRA_Check.Models;
 
 namespace CRA_Check.Tools.Parser
 {
-    public static class CycloneDXVulnerabilityParser
+    public static class CycloneDXParser
     {
-        public static List<Vulnerability> Parse(string json)
+        public static List<Component> ParseComponents(string json)
+        {
+            List<Component> components = new List<Component>();
+            List<Vulnerability> vulnerabilities = ParseVulnerabilities(json);
+
+            JsonDocument document = JsonDocument.Parse(json);
+            JsonElement root = document.RootElement;
+
+            if (root.TryGetProperty("components", out var componentsJson))
+            {
+                foreach (var componentJson in componentsJson.EnumerateArray())
+                {
+                    Component component = new Component();
+
+                    component.Name = componentJson.GetProperty("name").GetString();
+                    component.Version = componentJson.GetProperty("version").GetString();
+                    
+                    // Add vulnerabilities
+                    string sbomRef = componentJson.GetProperty("bom-ref").GetString();
+                    foreach (var vulnerability in vulnerabilities.Where(v => v.SbomRefs.Contains(sbomRef)))
+                    {
+                        component.Vulnerabilities.Add(vulnerability);
+                        vulnerability.Components.Add(component);
+                    }
+
+                    components.Add(component);
+                }
+            }
+
+            return components;
+        }
+
+        public static List<Vulnerability> ParseVulnerabilities(string json)
         {
             List<Vulnerability> vulnerabilities = new List<Vulnerability>();
 
@@ -43,6 +75,11 @@ namespace CRA_Check.Tools.Parser
                         }
 
                         vulnerability.Ratings.Add(rating);
+                    }
+
+                    foreach (var affectsJson in vulnerabilityJson.GetProperty("affects").EnumerateArray())
+                    {
+                        vulnerability.SbomRefs.Add(affectsJson.GetProperty("ref").GetString());
                     }
 
                     vulnerabilities.Add(vulnerability);

@@ -6,7 +6,7 @@ namespace CRA_Check.Tools.ReportGenerators
 {
     public class PdfReportGenerator : IReportGenerator
     {
-        public void GenerateReport(IList<Vulnerability> vulnerabilities, string destinationFilename)
+        public void GenerateReport(IList<Component> components, string destinationFilename)
         {
             Document.Create(container =>
             {
@@ -16,9 +16,9 @@ namespace CRA_Check.Tools.ReportGenerators
                     page.Header().Text("Vulnerabilies report").FontSize(20).SemiBold();
                     page.Content().PaddingVertical(10).Column(column =>
                     {
-                        foreach (var vulnerability in vulnerabilities)
+                        foreach (var component in components)
                         {
-                            column.Item().Text($"Component : {vulnerability.SourceName} ({vulnerability.Id})");
+                            column.Item().Text($"Component : {component.Name} ({component.Version})");
                         }
 
                         column.Item().PaddingBottom(10);

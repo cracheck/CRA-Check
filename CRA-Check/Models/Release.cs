@@ -58,20 +58,20 @@ namespace CRA_Check.Models
             }
         }
 
-        private ObservableCollection<Vulnerability> _vulnerabilities;
-        public ObservableCollection<Vulnerability> Vulnerabilities
+        private ObservableCollection<Component> _components;
+        public ObservableCollection<Component> Components
         {
-            get { return _vulnerabilities; }
+            get { return _components; }
             set
             {
-                _vulnerabilities = value;
+                _components = value;
                 OnPropertyChanged();
             }
         }
 
         public Release()
         {
-            Vulnerabilities = new ObservableCollection<Vulnerability>();
+            Components = new ObservableCollection<Component>();
             IsActive = true;
         }
 

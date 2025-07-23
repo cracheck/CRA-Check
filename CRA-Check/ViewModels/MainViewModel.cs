@@ -91,7 +91,8 @@ namespace CRA_Check.ViewModels
             {
                 Softwares = new ObservableCollection<Software>(dbContext.Softwares
                     .Include(s => s.Releases)
-                    .ThenInclude(r => r.Vulnerabilities)
+                    .ThenInclude(r => r.Components)
+                    .ThenInclude(c => c.Vulnerabilities)
                     .ThenInclude(v => v.Ratings).ToList());
 
                 WorkspaceInformation = dbContext.WorkspaceInformation.First();
@@ -245,26 +246,26 @@ namespace CRA_Check.ViewModels
                 using (DbContext dbContext = _databaseManager.GetContext())
                 {
                     Release release = dbContext.Releases
-                        .Include(r => r.Vulnerabilities)
+                        .Include(r => r.Components)
+                        .ThenInclude(c => c.Vulnerabilities)
                         .ThenInclude(v => v.Ratings)
                         .FirstOrDefault(r => r.Id == newRelease.Id);
 
                     if (release != null)
                     {
-                        if (e.PropertyName == nameof(Release.Vulnerabilities))
+                        if (e.PropertyName == nameof(Release.Components))
                         {
-                            dbContext.Vulnerabilities.RemoveRange(release.Vulnerabilities);
+                            dbContext.Components.RemoveRange(release.Components);
 
-                            foreach (var vulnerability in newRelease.Vulnerabilities)
+                            // Remove unused Vulnerability
+                            //var unusedVulnerabilities = dbContext.Vulnerabilities.Where()
+
+                            foreach (var component in newRelease.Components)
                             {
-                                vulnerability.Release = release;
-                                foreach (var rating in vulnerability.Ratings)
-                                {
-                                    rating.Vulnerability = vulnerability;
-                                }
+                                component.Release = release;
                             }
 
-                            dbContext.Vulnerabilities.AddRange(newRelease.Vulnerabilities);
+                            dbContext.Components.AddRange(newRelease.Components);
                         }
                         else
                         {

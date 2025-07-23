@@ -1,8 +1,10 @@
 ﻿using System.Collections.ObjectModel;
+using System.IO;
 using System.Reflection;
 using System.Windows;
 using CRA_Check.Data;
 using CRA_Check.Models;
+using CRA_Check.Tools.Parser;
 using CRA_Check.ViewModels;
 using CRA_Check.Views;
 using MahApps.Metro.Controls;
@@ -23,7 +25,10 @@ namespace CRA_Check
         {
             InitializeComponent();
 
-            //TryDb();
+            if (!File.Exists(@"d:\test.cradb"))
+            {
+                TryDb();
+            }
 
             MainViewModel = new MainViewModel();
 
@@ -176,10 +181,12 @@ namespace CRA_Check
 
                     window.Show();
 
-                    var vulnerabilities = await MainViewModel.VulnerabilityScanner.ScanVulnerability(release);
+                    string scanResult = await MainViewModel.VulnerabilityScanner.ScanVulnerability(release);
+
+                    List<Component> components = CycloneDXParser.ParseComponents(scanResult);
 
                     release.LastScan = DateTime.Now;
-                    release.Vulnerabilities = new ObservableCollection<Vulnerability>(vulnerabilities);
+                    release.Components = new ObservableCollection<Component>(components);
 
                     window.Close();
                 }
@@ -194,7 +201,7 @@ namespace CRA_Check
                 Release release = control.Tag as Release;
                 if (release != null)
                 {
-                    MainViewModel.ReportGenerator.GenerateReport(release.Vulnerabilities, @"D:\test.pdf");
+                    MainViewModel.ReportGenerator.GenerateReport(release.Components, @"D:\test.pdf");
                 }
             }
         }
@@ -202,11 +209,11 @@ namespace CRA_Check
         private async void About_OnClick(object sender, RoutedEventArgs e)
         {
             AboutWindow window = new AboutWindow() { Owner = this };
-            
+
             window.Version = Assembly.GetExecutingAssembly().GetName().Version;
             window.SyftVersion = await MainViewModel.SbomGenerator.GetVersion();
             window.GrypeVersion = await MainViewModel.VulnerabilityScanner.GetVersion();
-            
+
             window.ShowDialog();
         }
     }

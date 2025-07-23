@@ -9,6 +9,7 @@ namespace CRA_Check.Data
         public DbSet<WorkspaceInformation> WorkspaceInformation { get; set; }
         public DbSet<Software> Softwares { get; set; }
         public DbSet<Release> Releases { get; set; }
+        public DbSet<Component> Components { get; set; }
         public DbSet<Vulnerability> Vulnerabilities { get; set; }
         public DbSet<Rating> Ratings { get; set; }
 
@@ -31,10 +32,15 @@ namespace CRA_Check.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Release>()
-                .HasMany(r => r.Vulnerabilities)
+                .HasMany(r => r.Components)
                 .WithOne(v => v.Release)
                 .HasForeignKey(v => v.ReleaseId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Component>()
+                .HasMany(r => r.Vulnerabilities)
+                .WithMany(v => v.Components)
+                .UsingEntity(j => j.ToTable("ComponentVulnerabilities"));
 
             modelBuilder.Entity<Vulnerability>()
                 .HasMany(r => r.Ratings)
