@@ -186,6 +186,19 @@ namespace CRA_Check
             }
         }
 
+        private async void GenerateReport_OnClick(object sender, RoutedEventArgs e)
+        {
+            FrameworkElement control = sender as FrameworkElement;
+            if (control != null)
+            {
+                Release release = control.Tag as Release;
+                if (release != null)
+                {
+                    MainViewModel.ReportGenerator.GenerateReport(release.Vulnerabilities, @"D:\test.pdf");
+                }
+            }
+        }
+
         private async void About_OnClick(object sender, RoutedEventArgs e)
         {
             AboutWindow window = new AboutWindow() { Owner = this };

@@ -86,6 +86,7 @@
                                                     </StackPanel>
                                                     <StackPanel Orientation="Horizontal" Grid.Column="1">
                                                         <Button Click="ScanVulnerability_OnClick" Tag="{Binding .}">SCAN</Button>
+                                                        <Button Click="GenerateReport_OnClick" Tag="{Binding .}">Generate report</Button>
                                                     </StackPanel>
                                                 </Grid>
                                                 <ItemsControl Grid.Row="1" Margin="80,0,0,0" ItemsSource="{Binding Vulnerabilities}">

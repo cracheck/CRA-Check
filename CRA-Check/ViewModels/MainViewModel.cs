@@ -1,10 +1,10 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Diagnostics.Eventing.Reader;
 using System.Runtime.CompilerServices;
 using CRA_Check.Data;
 using CRA_Check.Models;
+using CRA_Check.Tools.ReportGenerators;
 using CRA_Check.Tools.SbomGenerators;
 using CRA_Check.Tools.VulnerabilityScanners;
 using Microsoft.EntityFrameworkCore;
@@ -15,10 +15,9 @@ namespace CRA_Check.ViewModels
     public class MainViewModel : INotifyPropertyChanged
     {
         private DatabaseManager _databaseManager;
-
         public ISbomGenerator SbomGenerator { get; private set; }
-
         public IVulnerabilityScanner VulnerabilityScanner { get; private set; }
+        public IReportGenerator ReportGenerator { get; private set; }
 
         private WorkspaceInformation _workspaceInformation;
         public WorkspaceInformation WorkspaceInformation
@@ -75,6 +74,7 @@ namespace CRA_Check.ViewModels
             _databaseManager = new DatabaseManager();
             SbomGenerator = new SyftSbomGenerator(@"D:\Syft.exe"); // TODO change
             VulnerabilityScanner = new GrypeScanner(@"D:\Grype.exe"); // TODO change
+            ReportGenerator = new PdfReportGenerator();
             OpenWorkspace(@"d:\test.cradb"); // TODO Remove
         }
 
@@ -254,7 +254,7 @@ namespace CRA_Check.ViewModels
                         if (e.PropertyName == nameof(Release.Vulnerabilities))
                         {
                             dbContext.Vulnerabilities.RemoveRange(release.Vulnerabilities);
-                            
+
                             foreach (var vulnerability in newRelease.Vulnerabilities)
                             {
                                 vulnerability.Release = release;
