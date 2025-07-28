@@ -18,27 +18,61 @@
             </MenuItem>
             <MenuItem Header="_Tools">
                 <MenuItem Header="_Create SBOM"/>
-                <MenuItem Header="_Check vulnerabilities"/>
-                <MenuItem Header="_Exit"/>
+                <MenuItem Header="_Generate report"/>
             </MenuItem>
             <MenuItem Header="?">
                 <MenuItem Header="_About" Click="About_OnClick"/>
             </MenuItem>
         </Menu>
-        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Workspace header -->
+            <Border Grid.Row="0" BorderThickness="0,2,0,2" BorderBrush="Black">
+                <Grid Margin="10">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding WorkspaceInformation.Name}"/>
-                        <Button HorizontalAlignment="Right" Click="EditWorkspace_OnClick">Edit</Button>
+                        <TextBlock Text="{Binding WorkspaceInformation.Name}" FontSize="36" VerticalAlignment="Center"/>
+                        <Button HorizontalAlignment="Right" VerticalAlignment="Center" Click="EditWorkspace_OnClick">Edit</Button>
+
+                        <Grid Margin="50,0,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Softwares"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1"/>
+                            <!-- TODO -->
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Releases"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1"/>
+                            <!-- TODO -->
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Vulnerabilities"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1"/>
+                            <!-- TODO -->
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Last scan"/>
+                            <TextBlock Grid.Row="3" Grid.Column="1"/>
+                            <!-- TODO -->
+                        </Grid>
                     </StackPanel>
-                    <Button HorizontalAlignment="Right" Click="AddSoftware_OnClick">Add software</Button>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button>Scan</Button>
+                        <!-- TODO -->
+                        <Button Click="AddSoftware_OnClick">Add software</Button>
+                    </StackPanel>
                 </Grid>
-                <ItemsControl Grid.Row="1" ItemsSource="{Binding Softwares}">
+            </Border>
+            <!-- End workspace header -->
+
+            <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding Softwares}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -58,92 +92,94 @@
                                     </StackPanel>
                                     <Button Grid.Column="1" Click="AddRelease_OnClick" Tag="{Binding .}">Add release</Button>
                                 </Grid>
-                                <ItemsControl Grid.Row="1" Margin="40,0,0,0" ItemsSource="{Binding Releases}">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Grid>
-                                                <Grid.Resources>
-                                                    <CollectionViewSource x:Key="ComponentsCollectionViewSource" Source="{Binding Components}">
-                                                        <CollectionViewSource.SortDescriptions>
-                                                            <componentModel:SortDescription PropertyName="MaxVulnerabilityRating" Direction="Descending"/>
-                                                            <componentModel:SortDescription PropertyName="Name" Direction="Ascending"/>
-                                                        </CollectionViewSource.SortDescriptions>
-                                                    </CollectionViewSource>
-                                                </Grid.Resources>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="Auto"/>
-                                                </Grid.RowDefinitions>
-                                                <Grid Grid.Row="0">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Grid.Style>
-                                                        <Style TargetType="Grid">
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding IsActive}" Value="True">
-                                                                    <Setter Property="Background" Value="Gray"></Setter>
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                            <Setter Property="Background" Value="DarkGray"></Setter>
-                                                        </Style>
-                                                    </Grid.Style>
-                                                    <StackPanel Orientation="Horizontal" Grid.Column="0">
-                                                        <CheckBox IsChecked="{Binding IsActive}"/>
-                                                        <TextBlock Text="{Binding VersionStr}"/>
-                                                    </StackPanel>
-                                                    <StackPanel Orientation="Horizontal" Grid.Column="1">
-                                                        <Button Click="ScanVulnerability_OnClick" Tag="{Binding .}">SCAN</Button>
-                                                        <Button Click="GenerateReport_OnClick" Tag="{Binding .}">Generate report</Button>
-                                                    </StackPanel>
+                                <Expander Grid.Row="1" Header="Releases" IsExpanded="False">
+                                    <ItemsControl Margin="40,0,0,0" ItemsSource="{Binding Releases}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid.Resources>
+                                                        <CollectionViewSource x:Key="ComponentsCollectionViewSource" Source="{Binding Components}">
+                                                            <CollectionViewSource.SortDescriptions>
+                                                                <componentModel:SortDescription PropertyName="MaxVulnerabilityRating" Direction="Descending"/>
+                                                                <componentModel:SortDescription PropertyName="Name" Direction="Ascending"/>
+                                                            </CollectionViewSource.SortDescriptions>
+                                                        </CollectionViewSource>
+                                                    </Grid.Resources>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                    </Grid.RowDefinitions>
+                                                    <Grid Grid.Row="0">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Grid.Style>
+                                                            <Style TargetType="Grid">
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                                                        <Setter Property="Background" Value="Gray"></Setter>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                                <Setter Property="Background" Value="DarkGray"></Setter>
+                                                            </Style>
+                                                        </Grid.Style>
+                                                        <StackPanel Orientation="Horizontal" Grid.Column="0">
+                                                            <CheckBox IsChecked="{Binding IsActive}"/>
+                                                            <TextBlock Text="{Binding VersionStr}"/>
+                                                        </StackPanel>
+                                                        <StackPanel Orientation="Horizontal" Grid.Column="1">
+                                                            <Button Click="ScanVulnerability_OnClick" Tag="{Binding .}">SCAN</Button>
+                                                            <Button Click="GenerateReport_OnClick" Tag="{Binding .}">Generate report</Button>
+                                                        </StackPanel>
+                                                    </Grid>
+                                                    <ItemsControl Grid.Row="1" Margin="80,0,0,0" ItemsSource="{Binding Source={StaticResource ComponentsCollectionViewSource}}">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Grid>
+                                                                    <Grid.Resources>
+                                                                        <CollectionViewSource x:Key="VulnerabilitiesCollectionViewSource" Source="{Binding Vulnerabilities}">
+                                                                            <CollectionViewSource.SortDescriptions>
+                                                                                <componentModel:SortDescription PropertyName="MaxRating" Direction="Descending"/>
+                                                                            </CollectionViewSource.SortDescriptions>
+                                                                        </CollectionViewSource>
+                                                                    </Grid.Resources>
+                                                                    <Grid.RowDefinitions>
+                                                                        <RowDefinition Height="Auto"/>
+                                                                        <RowDefinition Height="Auto"/>
+                                                                    </Grid.RowDefinitions>
+                                                                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                                                                        <TextBlock Margin="5" Text="{Binding Name}"/>
+                                                                        <TextBlock Margin="5" Text="{Binding Version}"/>
+                                                                    </StackPanel>
+                                                                    <ItemsControl Grid.Row="1" Margin="80,0,0,0" ItemsSource="{Binding Source={StaticResource VulnerabilitiesCollectionViewSource}}">
+                                                                        <ItemsControl.ItemTemplate>
+                                                                            <DataTemplate>
+                                                                                <StackPanel Orientation="Horizontal">
+                                                                                    <TextBlock Margin="5">ID:</TextBlock>
+                                                                                    <TextBlock Margin="5" Text="{Binding VulnerabilityId}"/>
+                                                                                    <TextBlock Margin="5">Score:</TextBlock>
+                                                                                    <TextBlock Margin="5" Text="{Binding Ratings[0].Score}"/>
+                                                                                    <TextBlock Margin="5">Severity:</TextBlock>
+                                                                                    <TextBlock Margin="5" Text="{Binding Ratings[0].Severity}"/>
+                                                                                </StackPanel>
+                                                                            </DataTemplate>
+                                                                        </ItemsControl.ItemTemplate>
+                                                                    </ItemsControl>
+                                                                </Grid>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
                                                 </Grid>
-                                                <ItemsControl Grid.Row="1" Margin="80,0,0,0" ItemsSource="{Binding Source={StaticResource ComponentsCollectionViewSource}}">
-                                                    <ItemsControl.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <Grid>
-                                                                <Grid.Resources>
-                                                                    <CollectionViewSource x:Key="VulnerabilitiesCollectionViewSource" Source="{Binding Vulnerabilities}">
-                                                                        <CollectionViewSource.SortDescriptions>
-                                                                            <componentModel:SortDescription PropertyName="MaxRating" Direction="Descending"/>
-                                                                        </CollectionViewSource.SortDescriptions>
-                                                                    </CollectionViewSource>
-                                                                </Grid.Resources>
-                                                                <Grid.RowDefinitions>
-                                                                    <RowDefinition Height="Auto"/>
-                                                                    <RowDefinition Height="Auto"/>
-                                                                </Grid.RowDefinitions>
-                                                                <StackPanel Grid.Row="0" Orientation="Horizontal">
-                                                                    <TextBlock Margin="5" Text="{Binding Name}"/>
-                                                                    <TextBlock Margin="5" Text="{Binding Version}"/>
-                                                                </StackPanel>
-                                                                <ItemsControl Grid.Row="1" Margin="80,0,0,0" ItemsSource="{Binding Source={StaticResource VulnerabilitiesCollectionViewSource}}">
-                                                                    <ItemsControl.ItemTemplate>
-                                                                        <DataTemplate>
-                                                                            <StackPanel Orientation="Horizontal">
-                                                                                <TextBlock Margin="5">ID:</TextBlock>
-                                                                                <TextBlock Margin="5" Text="{Binding VulnerabilityId}"/>
-                                                                                <TextBlock Margin="5">Score:</TextBlock>
-                                                                                <TextBlock Margin="5" Text="{Binding Ratings[0].Score}"/>
-                                                                                <TextBlock Margin="5">Severity:</TextBlock>
-                                                                                <TextBlock Margin="5" Text="{Binding Ratings[0].Severity}"/>
-                                                                            </StackPanel>
-                                                                        </DataTemplate>
-                                                                    </ItemsControl.ItemTemplate>
-                                                                </ItemsControl>
-                                                            </Grid>
-                                                        </DataTemplate>
-                                                    </ItemsControl.ItemTemplate>
-                                                </ItemsControl>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Expander>
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-            </Grid>
-        </ScrollViewer>
+            </ScrollViewer>
+        </Grid>
     </DockPanel>
 </mah:MetroWindow>
