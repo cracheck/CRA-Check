@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 
 namespace CRA_Check.Models
@@ -30,6 +31,12 @@ namespace CRA_Check.Models
                 _version = value;
                 OnPropertyChanged();
             }
+        }
+
+        [NotMapped]
+        public double MaxVulnerabilityRating
+        {
+            get { return Vulnerabilities.DefaultIfEmpty(new Vulnerability()).Max(v => v.MaxRating); }
         }
 
         private ObservableCollection<Vulnerability> _vulnerabilities;

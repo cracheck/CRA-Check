@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CRA_Check"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         mc:Ignorable="d"
         Title="CRA-Check"
         WindowStartupLocation="CenterScreen">
@@ -61,6 +62,14 @@
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <Grid>
+                                                <Grid.Resources>
+                                                    <CollectionViewSource x:Key="ComponentsCollectionViewSource" Source="{Binding Components}">
+                                                        <CollectionViewSource.SortDescriptions>
+                                                            <componentModel:SortDescription PropertyName="MaxVulnerabilityRating" Direction="Descending"/>
+                                                            <componentModel:SortDescription PropertyName="Name" Direction="Ascending"/>
+                                                        </CollectionViewSource.SortDescriptions>
+                                                    </CollectionViewSource>
+                                                </Grid.Resources>
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
@@ -89,18 +98,39 @@
                                                         <Button Click="GenerateReport_OnClick" Tag="{Binding .}">Generate report</Button>
                                                     </StackPanel>
                                                 </Grid>
-                                                <ItemsControl Grid.Row="1" Margin="80,0,0,0" ItemsSource="{Binding Vulnerabilities}">
+                                                <ItemsControl Grid.Row="1" Margin="80,0,0,0" ItemsSource="{Binding Source={StaticResource ComponentsCollectionViewSource}}">
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
                                                             <Grid>
-                                                                <StackPanel Orientation="Horizontal">
-                                                                    <TextBlock Margin="5">ID:</TextBlock>
-                                                                    <TextBlock Margin="5" Text="{Binding VulnerabilityId}"/>
-                                                                    <TextBlock Margin="5">Score:</TextBlock>
-                                                                    <TextBlock Margin="5" Text="{Binding Ratings[0].Score}"/>
-                                                                    <TextBlock Margin="5">Severity:</TextBlock>
-                                                                    <TextBlock Margin="5" Text="{Binding Ratings[0].Severity}"/>
+                                                                <Grid.Resources>
+                                                                    <CollectionViewSource x:Key="VulnerabilitiesCollectionViewSource" Source="{Binding Vulnerabilities}">
+                                                                        <CollectionViewSource.SortDescriptions>
+                                                                            <componentModel:SortDescription PropertyName="MaxRating" Direction="Descending"/>
+                                                                        </CollectionViewSource.SortDescriptions>
+                                                                    </CollectionViewSource>
+                                                                </Grid.Resources>
+                                                                <Grid.RowDefinitions>
+                                                                    <RowDefinition Height="Auto"/>
+                                                                    <RowDefinition Height="Auto"/>
+                                                                </Grid.RowDefinitions>
+                                                                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                                                                    <TextBlock Margin="5" Text="{Binding Name}"/>
+                                                                    <TextBlock Margin="5" Text="{Binding Version}"/>
                                                                 </StackPanel>
+                                                                <ItemsControl Grid.Row="1" Margin="80,0,0,0" ItemsSource="{Binding Source={StaticResource VulnerabilitiesCollectionViewSource}}">
+                                                                    <ItemsControl.ItemTemplate>
+                                                                        <DataTemplate>
+                                                                            <StackPanel Orientation="Horizontal">
+                                                                                <TextBlock Margin="5">ID:</TextBlock>
+                                                                                <TextBlock Margin="5" Text="{Binding VulnerabilityId}"/>
+                                                                                <TextBlock Margin="5">Score:</TextBlock>
+                                                                                <TextBlock Margin="5" Text="{Binding Ratings[0].Score}"/>
+                                                                                <TextBlock Margin="5">Severity:</TextBlock>
+                                                                                <TextBlock Margin="5" Text="{Binding Ratings[0].Severity}"/>
+                                                                            </StackPanel>
+                                                                        </DataTemplate>
+                                                                    </ItemsControl.ItemTemplate>
+                                                                </ItemsControl>
                                                             </Grid>
                                                         </DataTemplate>
                                                     </ItemsControl.ItemTemplate>
