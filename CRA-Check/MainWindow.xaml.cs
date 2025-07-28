@@ -201,7 +201,7 @@ namespace CRA_Check
                 Release release = control.Tag as Release;
                 if (release != null)
                 {
-                    MainViewModel.ReportGenerator.GenerateReport(release.Components, @"D:\test.pdf");
+                    MainViewModel.ReportGenerator.GenerateReport(release, @"D:\test.pdf");
                 }
             }
         }
