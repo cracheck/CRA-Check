@@ -7,9 +7,13 @@
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         xmlns:views="clr-namespace:CRA_Check.Views"
+        xmlns:converters="clr-namespace:CRA_Check.Converters"
         mc:Ignorable="d"
         Title="CRA-Check"
         WindowStartupLocation="CenterScreen">
+    <mah:MetroWindow.Resources>
+        <converters:RiskLevelToColorConverter x:Key="RiskLevelToColorConverter"/>
+    </mah:MetroWindow.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
@@ -72,7 +76,8 @@
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <StackPanel Orientation="Horizontal" Grid.Column="0">
-                                        <TextBlock Text="{Binding Name}" FontSize="16" Margin="5"/>
+                                        <Border Background="{Binding MaxSeverityLevel, Converter={StaticResource RiskLevelToColorConverter}}" Height="35" Width="35" Margin="10,0"/>
+                                        <TextBlock Text="{Binding Name}" FontSize="22" Margin="5"/>
                                         <Button Tag="{Binding .}" Click="EditSoftware_OnClick">Edit</Button>
                                         <Button Tag="{Binding .}" Click="DeleteSoftware_OnClick">Delete</Button>
                                     </StackPanel>
