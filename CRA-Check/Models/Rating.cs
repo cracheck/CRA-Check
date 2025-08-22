@@ -57,6 +57,7 @@ namespace CRA_Check.Models
 
         public Rating()
         {
+            Severity = SeverityLevel.noRisk;
             Score = -1;
             Vector = "";
         }

@@ -2,6 +2,7 @@
 {
     public enum SeverityLevel
     {
+        noRisk,
         low,
         negligible,
         medium,

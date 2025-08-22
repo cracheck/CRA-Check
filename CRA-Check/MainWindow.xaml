@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:CRA_Check"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        xmlns:views="clr-namespace:CRA_Check.Views"
         mc:Ignorable="d"
         Title="CRA-Check"
         WindowStartupLocation="CenterScreen">
@@ -37,30 +38,7 @@
                         <TextBlock Text="{Binding WorkspaceInformation.Name}" FontSize="36" VerticalAlignment="Center"/>
                         <Button HorizontalAlignment="Right" VerticalAlignment="Center" Click="EditWorkspace_OnClick">Edit</Button>
 
-                        <Grid Margin="50,0,0,0">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Softwares"/>
-                            <TextBlock Grid.Row="0" Grid.Column="1"/>
-                            <!-- TODO -->
-                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Releases"/>
-                            <TextBlock Grid.Row="1" Grid.Column="1"/>
-                            <!-- TODO -->
-                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Vulnerabilities"/>
-                            <TextBlock Grid.Row="2" Grid.Column="1"/>
-                            <!-- TODO -->
-                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Last scan"/>
-                            <TextBlock Grid.Row="3" Grid.Column="1"/>
-                            <!-- TODO -->
-                        </Grid>
+                        <views:WorkspaceStatusControl Softwares="{Binding MainViewModel.Softwares, RelativeSource={RelativeSource AncestorType=local:MainWindow}}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button>Scan</Button>
@@ -76,6 +54,14 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Grid>
+                                <Grid.Resources>
+                                    <CollectionViewSource x:Key="ReleasesCollectionViewSource" Source="{Binding Releases}">
+                                        <CollectionViewSource.SortDescriptions>
+                                            <componentModel:SortDescription PropertyName="IsActive" Direction="Descending"/>
+                                            <componentModel:SortDescription PropertyName="Version" Direction="Descending"/>
+                                        </CollectionViewSource.SortDescriptions>
+                                    </CollectionViewSource>
+                                </Grid.Resources>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
@@ -90,10 +76,14 @@
                                         <Button Tag="{Binding .}" Click="EditSoftware_OnClick">Edit</Button>
                                         <Button Tag="{Binding .}" Click="DeleteSoftware_OnClick">Delete</Button>
                                     </StackPanel>
-                                    <Button Grid.Column="1" Click="AddRelease_OnClick" Tag="{Binding .}">Add release</Button>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                        <Button>Scan</Button>
+                                        <!-- TODO -->
+                                        <Button Click="AddRelease_OnClick" Tag="{Binding .}">Add release</Button>
+                                    </StackPanel>
                                 </Grid>
                                 <Expander Grid.Row="1" Header="Releases" IsExpanded="False">
-                                    <ItemsControl Margin="40,0,0,0" ItemsSource="{Binding Releases}">
+                                    <ItemsControl Margin="40,0,0,0" ItemsSource="{Binding Source={StaticResource ReleasesCollectionViewSource}}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <Grid>

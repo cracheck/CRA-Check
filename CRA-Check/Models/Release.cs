@@ -69,6 +69,12 @@ namespace CRA_Check.Models
             }
         }
 
+        [NotMapped]
+        public SeverityLevel MaxSeverityLevel
+        {
+            get { return Components.DefaultIfEmpty(new Component()).Max(v => v.MaxSeverityLevel); }
+        }
+
         public Release()
         {
             Components = new ObservableCollection<Component>();

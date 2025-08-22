@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 
 namespace CRA_Check.Models
@@ -28,6 +29,12 @@ namespace CRA_Check.Models
                 _releases = value;
                 OnPropertyChanged();
             }
+        }
+
+        [NotMapped]
+        public SeverityLevel MaxSeverityLevel
+        {
+            get { return Releases.Where(r => r.IsActive).DefaultIfEmpty(new Release()).Max(r => r.MaxSeverityLevel); }
         }
 
         public Software()

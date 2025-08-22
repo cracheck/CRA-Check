@@ -8,7 +8,6 @@ using CRA_Check.Tools.Parser;
 using CRA_Check.ViewModels;
 using CRA_Check.Views;
 using MahApps.Metro.Controls;
-using Application = System.Windows.Application;
 using MessageBox = System.Windows.Forms.MessageBox;
 using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 

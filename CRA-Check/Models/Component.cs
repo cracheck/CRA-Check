@@ -39,6 +39,12 @@ namespace CRA_Check.Models
             get { return Vulnerabilities.DefaultIfEmpty(new Vulnerability()).Max(v => v.MaxRating); }
         }
 
+        [NotMapped]
+        public SeverityLevel MaxSeverityLevel
+        {
+            get { return Vulnerabilities.DefaultIfEmpty(new Vulnerability()).Max(v => v.MaxSeverityLevel); }
+        }
+
         private ObservableCollection<Vulnerability> _vulnerabilities;
 
         public ObservableCollection<Vulnerability> Vulnerabilities
