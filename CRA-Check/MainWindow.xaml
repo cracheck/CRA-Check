@@ -42,7 +42,7 @@
                         <TextBlock Text="{Binding WorkspaceInformation.Name}" FontSize="36" VerticalAlignment="Center"/>
                         <Button HorizontalAlignment="Right" VerticalAlignment="Center" Click="EditWorkspace_OnClick">Edit</Button>
 
-                        <views:WorkspaceStatusControl Softwares="{Binding MainViewModel.Softwares, RelativeSource={RelativeSource AncestorType=local:MainWindow}}"/>
+                        <views:WorkspaceStatusControl Margin="50,0,0,0" Softwares="{Binding MainViewModel.Softwares, RelativeSource={RelativeSource AncestorType=local:MainWindow}}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button>Scan</Button>
@@ -88,7 +88,7 @@
                                     </StackPanel>
                                 </Grid>
                                 <Expander Grid.Row="1" Header="Releases" IsExpanded="False">
-                                    <ItemsControl Margin="40,0,0,0" ItemsSource="{Binding Source={StaticResource ReleasesCollectionViewSource}}">
+                                    <ItemsControl Margin="10,0,0,0" ItemsSource="{Binding Source={StaticResource ReleasesCollectionViewSource}}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <Grid>
@@ -106,10 +106,11 @@
                                                     </Grid.RowDefinitions>
                                                     <Grid Grid.Row="0">
                                                         <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto"/>
                                                             <ColumnDefinition Width="*"/>
                                                             <ColumnDefinition Width="Auto"/>
                                                         </Grid.ColumnDefinitions>
-                                                        <Grid.Style>
+                                                        <!--<Grid.Style>
                                                             <Style TargetType="Grid">
                                                                 <Style.Triggers>
                                                                     <DataTrigger Binding="{Binding IsActive}" Value="True">
@@ -118,17 +119,19 @@
                                                                 </Style.Triggers>
                                                                 <Setter Property="Background" Value="DarkGray"></Setter>
                                                             </Style>
-                                                        </Grid.Style>
+                                                        </Grid.Style>-->
                                                         <StackPanel Orientation="Horizontal" Grid.Column="0">
-                                                            <CheckBox IsChecked="{Binding IsActive}"/>
-                                                            <TextBlock Text="{Binding VersionStr}"/>
+                                                            <!--<CheckBox IsChecked="{Binding IsActive}"/>-->
+                                                            <TextBlock Text="Version:" FontSize="20"/>
+                                                            <TextBlock Text="{Binding VersionStr}" FontSize="20" Margin="10,0"/>
                                                         </StackPanel>
-                                                        <StackPanel Orientation="Horizontal" Grid.Column="1">
+                                                        <views:ReleaseStatusControl Grid.Column="1" Release="{Binding .}"/>
+                                                        <StackPanel Orientation="Horizontal" Grid.Column="2">
                                                             <Button Click="ScanVulnerability_OnClick" Tag="{Binding .}">SCAN</Button>
                                                             <Button Click="GenerateReport_OnClick" Tag="{Binding .}">Generate report</Button>
                                                         </StackPanel>
                                                     </Grid>
-                                                    <ItemsControl Grid.Row="1" Margin="80,0,0,0" ItemsSource="{Binding Source={StaticResource ComponentsCollectionViewSource}}">
+                                                    <!--<ItemsControl Grid.Row="1" Margin="80,0,0,0" ItemsSource="{Binding Source={StaticResource ComponentsCollectionViewSource}}">
                                                         <ItemsControl.ItemTemplate>
                                                             <DataTemplate>
                                                                 <Grid>
@@ -164,7 +167,7 @@
                                                                 </Grid>
                                                             </DataTemplate>
                                                         </ItemsControl.ItemTemplate>
-                                                    </ItemsControl>
+                                                    </ItemsControl>-->
                                                 </Grid>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
