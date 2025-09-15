@@ -110,64 +110,17 @@
                                                             <ColumnDefinition Width="*"/>
                                                             <ColumnDefinition Width="Auto"/>
                                                         </Grid.ColumnDefinitions>
-                                                        <!--<Grid.Style>
-                                                            <Style TargetType="Grid">
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding IsActive}" Value="True">
-                                                                        <Setter Property="Background" Value="Gray"></Setter>
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                                <Setter Property="Background" Value="DarkGray"></Setter>
-                                                            </Style>
-                                                        </Grid.Style>-->
                                                         <StackPanel Orientation="Horizontal" Grid.Column="0">
-                                                            <!--<CheckBox IsChecked="{Binding IsActive}"/>-->
                                                             <TextBlock Text="Version:" FontSize="20"/>
                                                             <TextBlock Text="{Binding VersionStr}" FontSize="20" Margin="10,0"/>
                                                         </StackPanel>
                                                         <views:ReleaseStatusControl Grid.Column="1" Release="{Binding .}"/>
                                                         <StackPanel Orientation="Horizontal" Grid.Column="2">
+                                                            <Button Click="Detail_OnClick" Tag="{Binding .}">Detail</Button>
                                                             <Button Click="ScanVulnerability_OnClick" Tag="{Binding .}">SCAN</Button>
-                                                            <Button Click="GenerateReport_OnClick" Tag="{Binding .}">Generate report</Button>
+                                                            <!--<Button Click="GenerateReport_OnClick" Tag="{Binding .}">Generate report</Button>-->
                                                         </StackPanel>
                                                     </Grid>
-                                                    <!--<ItemsControl Grid.Row="1" Margin="80,0,0,0" ItemsSource="{Binding Source={StaticResource ComponentsCollectionViewSource}}">
-                                                        <ItemsControl.ItemTemplate>
-                                                            <DataTemplate>
-                                                                <Grid>
-                                                                    <Grid.Resources>
-                                                                        <CollectionViewSource x:Key="VulnerabilitiesCollectionViewSource" Source="{Binding Vulnerabilities}">
-                                                                            <CollectionViewSource.SortDescriptions>
-                                                                                <componentModel:SortDescription PropertyName="MaxRating" Direction="Descending"/>
-                                                                            </CollectionViewSource.SortDescriptions>
-                                                                        </CollectionViewSource>
-                                                                    </Grid.Resources>
-                                                                    <Grid.RowDefinitions>
-                                                                        <RowDefinition Height="Auto"/>
-                                                                        <RowDefinition Height="Auto"/>
-                                                                    </Grid.RowDefinitions>
-                                                                    <StackPanel Grid.Row="0" Orientation="Horizontal">
-                                                                        <TextBlock Margin="5" Text="{Binding Name}"/>
-                                                                        <TextBlock Margin="5" Text="{Binding Version}"/>
-                                                                    </StackPanel>
-                                                                    <ItemsControl Grid.Row="1" Margin="80,0,0,0" ItemsSource="{Binding Source={StaticResource VulnerabilitiesCollectionViewSource}}">
-                                                                        <ItemsControl.ItemTemplate>
-                                                                            <DataTemplate>
-                                                                                <StackPanel Orientation="Horizontal">
-                                                                                    <TextBlock Margin="5">ID:</TextBlock>
-                                                                                    <TextBlock Margin="5" Text="{Binding VulnerabilityId}"/>
-                                                                                    <TextBlock Margin="5">Score:</TextBlock>
-                                                                                    <TextBlock Margin="5" Text="{Binding Ratings[0].Score}"/>
-                                                                                    <TextBlock Margin="5">Severity:</TextBlock>
-                                                                                    <TextBlock Margin="5" Text="{Binding Ratings[0].Severity}"/>
-                                                                                </StackPanel>
-                                                                            </DataTemplate>
-                                                                        </ItemsControl.ItemTemplate>
-                                                                    </ItemsControl>
-                                                                </Grid>
-                                                            </DataTemplate>
-                                                        </ItemsControl.ItemTemplate>
-                                                    </ItemsControl>-->
                                                 </Grid>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>

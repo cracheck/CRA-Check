@@ -7,7 +7,7 @@ using UserControl = System.Windows.Controls.UserControl;
 namespace CRA_Check.Views
 {
     /// <summary>
-    /// Interaction logic for WorkspaceStatusControl.xaml
+    /// Interaction logic for ReleaseStatusControl.xaml
     /// </summary>
     public partial class ReleaseStatusControl : UserControl, INotifyPropertyChanged
     {
