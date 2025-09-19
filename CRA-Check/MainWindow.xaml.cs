@@ -200,24 +200,11 @@ namespace CRA_Check
                 Release release = control.Tag as Release;
                 if (release != null)
                 {
-                    ReleaseVulnerabilityDetailWindow window = new ReleaseVulnerabilityDetailWindow(release);
+                    ReleaseVulnerabilityDetailWindow window = new ReleaseVulnerabilityDetailWindow(MainViewModel, release);
                     window.ShowDialog();
                 }
             }
         }
-
-        //private async void GenerateReport_OnClick(object sender, RoutedEventArgs e)
-        //{
-        //    FrameworkElement control = sender as FrameworkElement;
-        //    if (control != null)
-        //    {
-        //        Release release = control.Tag as Release;
-        //        if (release != null)
-        //        {
-        //            MainViewModel.ReportGenerator.GenerateReport(release, @"D:\test.pdf");
-        //        }
-        //    }
-        //}
 
         private async void About_OnClick(object sender, RoutedEventArgs e)
         {

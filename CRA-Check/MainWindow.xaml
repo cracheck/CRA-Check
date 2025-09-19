@@ -118,7 +118,6 @@
                                                         <StackPanel Orientation="Horizontal" Grid.Column="2">
                                                             <Button Click="Detail_OnClick" Tag="{Binding .}">Detail</Button>
                                                             <Button Click="ScanVulnerability_OnClick" Tag="{Binding .}">SCAN</Button>
-                                                            <!--<Button Click="GenerateReport_OnClick" Tag="{Binding .}">Generate report</Button>-->
                                                         </StackPanel>
                                                     </Grid>
                                                 </Grid>
