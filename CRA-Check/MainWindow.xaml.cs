@@ -180,6 +180,12 @@ namespace CRA_Check
 
                     window.Show();
 
+                    window.WaitingMessage = "Update database";
+
+                    await MainViewModel.VulnerabilityScanner.UpdateDatabase();
+
+                    window.WaitingMessage = "Scan for vulnerabilities";
+
                     string scanResult = await MainViewModel.VulnerabilityScanner.ScanVulnerability(release);
 
                     List<Component> components = CycloneDXParser.ParseComponents(scanResult);
