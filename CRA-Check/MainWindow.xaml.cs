@@ -34,6 +34,31 @@ namespace CRA_Check
             DataContext = MainViewModel;
         }
 
+        async private void ScanReleases(List<Release> releases)
+        {
+            LoadingWindow window = new LoadingWindow();
+
+            window.Show();
+
+            window.WaitingMessage = "Update database";
+
+            await MainViewModel.VulnerabilityScanner.UpdateDatabase();
+
+            foreach (var release in releases)
+            {
+                window.WaitingMessage = $"{release.Software.Name} {release.VersionStr}: Scan for vulnerabilities";
+
+                string scanResult = await MainViewModel.VulnerabilityScanner.ScanVulnerability(release);
+
+                List<Component> components = CycloneDXParser.ParseComponents(scanResult);
+
+                release.LastScan = DateTime.Now;
+                release.Components = new ObservableCollection<Component>(components);
+            }
+
+            window.Close();
+        }
+
         private void TryDb()
         {
             using var db = new DbContext(@"d:\test.cradb");
@@ -89,6 +114,23 @@ namespace CRA_Check
             }
         }
 
+        async private void ScanWorkspace_OnClick(object sender, RoutedEventArgs e)
+        {
+            List<Release> releases = new List<Release>();
+            foreach (var software in MainViewModel.Softwares)
+            {
+                foreach (var release in software.Releases)
+                {
+                    if (release.IsActive)
+                    {
+                        releases.Add(release);
+                    }
+                }
+            }
+
+            ScanReleases(releases);
+        }
+
         private void AddSoftware_OnClick(object sender, RoutedEventArgs e)
         {
             NewOrEditSoftwareWindow window = new NewOrEditSoftwareWindow() { Owner = this };
@@ -97,6 +139,19 @@ namespace CRA_Check
             if (window.IsValid)
             {
                 MainViewModel.Softwares.Add(new Software() { Name = window.SoftwareName });
+            }
+        }
+
+        async private void ScanSoftware_OnClick(object sender, RoutedEventArgs e)
+        {
+            FrameworkElement control = sender as FrameworkElement;
+            if (control != null)
+            {
+                Software software = control.Tag as Software;
+                if (software != null)
+                {
+                    ScanReleases(software.Releases.Where(r => r.IsActive).ToList());
+                }
             }
         }
 
@@ -176,24 +231,7 @@ namespace CRA_Check
                 Release release = control.Tag as Release;
                 if (release != null)
                 {
-                    LoadingWindow window = new LoadingWindow();
-
-                    window.Show();
-
-                    window.WaitingMessage = "Update database";
-
-                    await MainViewModel.VulnerabilityScanner.UpdateDatabase();
-
-                    window.WaitingMessage = "Scan for vulnerabilities";
-
-                    string scanResult = await MainViewModel.VulnerabilityScanner.ScanVulnerability(release);
-
-                    List<Component> components = CycloneDXParser.ParseComponents(scanResult);
-
-                    release.LastScan = DateTime.Now;
-                    release.Components = new ObservableCollection<Component>(components);
-
-                    window.Close();
+                    ScanReleases(new List<Release>() { release });
                 }
             }
         }

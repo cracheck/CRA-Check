@@ -45,8 +45,7 @@
                         <views:WorkspaceStatusControl Margin="50,0,0,0" Softwares="{Binding MainViewModel.Softwares, RelativeSource={RelativeSource AncestorType=local:MainWindow}}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button>Scan</Button>
-                        <!-- TODO -->
+                        <Button Click="ScanWorkspace_OnClick">Scan</Button>
                         <Button Click="AddSoftware_OnClick">Add software</Button>
                     </StackPanel>
                 </Grid>
@@ -82,8 +81,7 @@
                                         <Button Tag="{Binding .}" Click="DeleteSoftware_OnClick">Delete</Button>
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                        <Button>Scan</Button>
-                                        <!-- TODO -->
+                                        <Button Click="ScanSoftware_OnClick" Tag="{Binding .}">Scan</Button>
                                         <Button Click="AddRelease_OnClick" Tag="{Binding .}">Add release</Button>
                                     </StackPanel>
                                 </Grid>
