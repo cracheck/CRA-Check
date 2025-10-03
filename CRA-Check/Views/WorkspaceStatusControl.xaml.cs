@@ -16,7 +16,7 @@ namespace CRA_Check.Views
         private static void SoftwaresPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             WorkspaceStatusControl control = d as WorkspaceStatusControl;
-            if (control != null)
+            if (control?.Softwares != null)
             {
                 control.UpdateValues();
             }

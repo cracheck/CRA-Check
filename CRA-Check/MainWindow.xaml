@@ -13,6 +13,8 @@
         WindowStartupLocation="CenterScreen">
     <mah:MetroWindow.Resources>
         <converters:RiskLevelToColorConverter x:Key="RiskLevelToColorConverter"/>
+        <converters:BooleanToVisibilityCustomConverter x:Key="HasWorkspaceVisibilityConverter"/>
+        <converters:BooleanToVisibilityCustomConverter VisibilityOnTrue="Collapsed" VisibilityOnFalse="Visible" x:Key="HasNotWorkspaceVisibilityConverter"/>
     </mah:MetroWindow.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
@@ -30,104 +32,109 @@
             </MenuItem>
         </Menu>
         <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+            <Grid Visibility="{Binding HasWorkspace, Converter={StaticResource HasNotWorkspaceVisibilityConverter}}">
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20">Open or create a workspace</TextBlock>
+            </Grid>
+            <Grid Visibility="{Binding HasWorkspace, Converter={StaticResource HasWorkspaceVisibilityConverter}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-            <!-- Workspace header -->
-            <Border Grid.Row="0" BorderThickness="0,2,0,2" BorderBrush="Black">
-                <Grid Margin="10">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding WorkspaceInformation.Name}" FontSize="36" VerticalAlignment="Center"/>
-                        <Button HorizontalAlignment="Right" VerticalAlignment="Center" Click="EditWorkspace_OnClick">Edit</Button>
+                <!-- Workspace header -->
+                <Border Grid.Row="0" BorderThickness="0,2,0,2" BorderBrush="Black">
+                    <Grid Margin="10">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding WorkspaceInformation.Name}" FontSize="36" VerticalAlignment="Center"/>
+                            <Button HorizontalAlignment="Right" VerticalAlignment="Center" Click="EditWorkspace_OnClick">Edit</Button>
 
-                        <views:WorkspaceStatusControl Margin="50,0,0,0" Softwares="{Binding MainViewModel.Softwares, RelativeSource={RelativeSource AncestorType=local:MainWindow}}"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Click="ScanWorkspace_OnClick">Scan</Button>
-                        <Button Click="AddSoftware_OnClick">Add software</Button>
-                    </StackPanel>
-                </Grid>
-            </Border>
-            <!-- End workspace header -->
+                            <views:WorkspaceStatusControl Margin="50,0,0,0" Softwares="{Binding MainViewModel.Softwares, RelativeSource={RelativeSource AncestorType=local:MainWindow}}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Click="ScanWorkspace_OnClick">Scan</Button>
+                            <Button Click="AddSoftware_OnClick">Add software</Button>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <!-- End workspace header -->
 
-            <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                <ItemsControl ItemsSource="{Binding Softwares}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.Resources>
-                                    <CollectionViewSource x:Key="ReleasesCollectionViewSource" Source="{Binding Releases}">
-                                        <CollectionViewSource.SortDescriptions>
-                                            <componentModel:SortDescription PropertyName="IsActive" Direction="Descending"/>
-                                            <componentModel:SortDescription PropertyName="Version" Direction="Descending"/>
-                                        </CollectionViewSource.SortDescriptions>
-                                    </CollectionViewSource>
-                                </Grid.Resources>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <Grid Grid.Row="0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <StackPanel Orientation="Horizontal" Grid.Column="0">
-                                        <Border Background="{Binding MaxSeverityLevel, Converter={StaticResource RiskLevelToColorConverter}}" Height="35" Width="35" Margin="10,0"/>
-                                        <TextBlock Text="{Binding Name}" FontSize="22" Margin="5"/>
-                                        <Button Tag="{Binding .}" Click="EditSoftware_OnClick">Edit</Button>
-                                        <Button Tag="{Binding .}" Click="DeleteSoftware_OnClick">Delete</Button>
-                                    </StackPanel>
-                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                        <Button Click="ScanSoftware_OnClick" Tag="{Binding .}">Scan</Button>
-                                        <Button Click="AddRelease_OnClick" Tag="{Binding .}">Add release</Button>
-                                    </StackPanel>
-                                </Grid>
-                                <Expander Grid.Row="1" Header="Releases" IsExpanded="False">
-                                    <ItemsControl Margin="10,0,0,0" ItemsSource="{Binding Source={StaticResource ReleasesCollectionViewSource}}">
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <Grid>
-                                                    <Grid.Resources>
-                                                        <CollectionViewSource x:Key="ComponentsCollectionViewSource" Source="{Binding Components}">
-                                                            <CollectionViewSource.SortDescriptions>
-                                                                <componentModel:SortDescription PropertyName="MaxVulnerabilityRating" Direction="Descending"/>
-                                                                <componentModel:SortDescription PropertyName="Name" Direction="Ascending"/>
-                                                            </CollectionViewSource.SortDescriptions>
-                                                        </CollectionViewSource>
-                                                    </Grid.Resources>
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="Auto"/>
-                                                        <RowDefinition Height="Auto"/>
-                                                    </Grid.RowDefinitions>
-                                                    <Grid Grid.Row="0">
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="Auto"/>
-                                                            <ColumnDefinition Width="*"/>
-                                                            <ColumnDefinition Width="Auto"/>
-                                                        </Grid.ColumnDefinitions>
-                                                        <StackPanel Orientation="Horizontal" Grid.Column="0">
-                                                            <TextBlock Text="Version:" FontSize="20"/>
-                                                            <TextBlock Text="{Binding VersionStr}" FontSize="20" Margin="10,0"/>
-                                                        </StackPanel>
-                                                        <views:ReleaseStatusControl Grid.Column="1" Release="{Binding .}"/>
-                                                        <StackPanel Orientation="Horizontal" Grid.Column="2">
-                                                            <Button Click="Detail_OnClick" Tag="{Binding .}">Detail</Button>
-                                                            <Button Click="ScanVulnerability_OnClick" Tag="{Binding .}">SCAN</Button>
-                                                        </StackPanel>
+                <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding Softwares}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.Resources>
+                                        <CollectionViewSource x:Key="ReleasesCollectionViewSource" Source="{Binding Releases}">
+                                            <CollectionViewSource.SortDescriptions>
+                                                <componentModel:SortDescription PropertyName="IsActive" Direction="Descending"/>
+                                                <componentModel:SortDescription PropertyName="Version" Direction="Descending"/>
+                                            </CollectionViewSource.SortDescriptions>
+                                        </CollectionViewSource>
+                                    </Grid.Resources>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Orientation="Horizontal" Grid.Column="0">
+                                            <Border Background="{Binding MaxSeverityLevel, Converter={StaticResource RiskLevelToColorConverter}}" Height="35" Width="35" Margin="10,0"/>
+                                            <TextBlock Text="{Binding Name}" FontSize="22" Margin="5"/>
+                                            <Button Tag="{Binding .}" Click="EditSoftware_OnClick">Edit</Button>
+                                            <Button Tag="{Binding .}" Click="DeleteSoftware_OnClick">Delete</Button>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                            <Button Click="ScanSoftware_OnClick" Tag="{Binding .}">Scan</Button>
+                                            <Button Click="AddRelease_OnClick" Tag="{Binding .}">Add release</Button>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Expander Grid.Row="1" Header="Releases" IsExpanded="False">
+                                        <ItemsControl Margin="10,0,0,0" ItemsSource="{Binding Source={StaticResource ReleasesCollectionViewSource}}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid>
+                                                        <Grid.Resources>
+                                                            <CollectionViewSource x:Key="ComponentsCollectionViewSource" Source="{Binding Components}">
+                                                                <CollectionViewSource.SortDescriptions>
+                                                                    <componentModel:SortDescription PropertyName="MaxVulnerabilityRating" Direction="Descending"/>
+                                                                    <componentModel:SortDescription PropertyName="Name" Direction="Ascending"/>
+                                                                </CollectionViewSource.SortDescriptions>
+                                                            </CollectionViewSource>
+                                                        </Grid.Resources>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="Auto"/>
+                                                        </Grid.RowDefinitions>
+                                                        <Grid Grid.Row="0">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <StackPanel Orientation="Horizontal" Grid.Column="0">
+                                                                <TextBlock Text="Version:" FontSize="20"/>
+                                                                <TextBlock Text="{Binding VersionStr}" FontSize="20" Margin="10,0"/>
+                                                            </StackPanel>
+                                                            <views:ReleaseStatusControl Grid.Column="1" Release="{Binding .}"/>
+                                                            <StackPanel Orientation="Horizontal" Grid.Column="2">
+                                                                <Button Click="Detail_OnClick" Tag="{Binding .}">Detail</Button>
+                                                                <Button Click="ScanVulnerability_OnClick" Tag="{Binding .}">SCAN</Button>
+                                                            </StackPanel>
+                                                        </Grid>
                                                     </Grid>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
-                                </Expander>
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </Expander>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
         </Grid>
     </DockPanel>
 </mah:MetroWindow>

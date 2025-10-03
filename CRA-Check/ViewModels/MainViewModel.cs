@@ -32,7 +32,13 @@ namespace CRA_Check.ViewModels
             {
                 _workspaceInformation = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(HasWorkspace));
             }
+        }
+
+        public bool HasWorkspace
+        {
+            get { return WorkspaceInformation != null; }
         }
 
         private ObservableCollection<Software> _softwares;
@@ -83,8 +89,10 @@ namespace CRA_Check.ViewModels
             VulnerabilityScanner = new GrypeScanner(Path.Combine(exeDirectory, GRYPE_FILEMAME));
 
             ReportGenerator = new PdfReportGenerator();
-            
-            OpenWorkspace(@"d:\test.cradb"); // TODO Remove
+
+#if DEBUG
+            OpenWorkspace(@"d:\test.cradb");
+#endif
         }
 
         public void OpenWorkspace(string filename)
