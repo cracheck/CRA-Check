@@ -82,6 +82,8 @@ Source: "..\CRA-Check\bin\Release\net8.0-windows\System.Text.Json.dll"; DestDir:
 Source: "..\CRA-Check\bin\Release\net8.0-windows\de\*.*"; DestDir: "{app}\de"; Flags: ignoreversion
 Source: "..\CRA-Check\bin\Release\net8.0-windows\runtimes\win-x64\*.*"; DestDir: "{app}\runtimes\win-x64"; Flags: ignoreversion recursesubdirs
 Source: "..\CRA-Check\bin\Release\net8.0-windows\runtimes\win-x86\*.*"; DestDir: "{app}\runtimes\win-x86"; Flags: ignoreversion recursesubdirs
+Source: "..\CRA-Check\bin\Release\net8.0-windows\syft.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\CRA-Check\bin\Release\net8.0-windows\grype.exe"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]
