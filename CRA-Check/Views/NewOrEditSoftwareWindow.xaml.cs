@@ -1,7 +1,10 @@
-﻿using System.ComponentModel;
+﻿using CRA_Check.Models;
+using CRA_Check.ViewModels;
+using MahApps.Metro.Controls;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using MahApps.Metro.Controls;
 
 
 namespace CRA_Check.Views
@@ -11,6 +14,9 @@ namespace CRA_Check.Views
     /// </summary>
     public partial class NewOrEditSoftwareWindow : MetroWindow, INotifyPropertyChanged
     {
+        private ObservableCollection<Software> _softwares;
+        private string _originalName;
+
         private string _softwareName;
         public string SoftwareName
         {
@@ -28,8 +34,11 @@ namespace CRA_Check.Views
 
         public bool IsValid { get; private set; }
 
-        public NewOrEditSoftwareWindow(string name = null)
+        public NewOrEditSoftwareWindow(ObservableCollection<Software> softwares, string name = null)
         {
+            _softwares = softwares;
+            _originalName = name;
+
             SoftwareName = name;
             IsCreationMode = string.IsNullOrEmpty(name);
             if (IsCreationMode)
@@ -44,10 +53,15 @@ namespace CRA_Check.Views
 
         private void Apply_OnClick(object sender, RoutedEventArgs e)
         {
-            // TODO test unique
             if (string.IsNullOrEmpty(SoftwareName))
             {
                 System.Windows.MessageBox.Show("The name cannot be empty", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if(_originalName != SoftwareName && _softwares.Any(s => s.Name == SoftwareName))
+            {
+                System.Windows.MessageBox.Show("A software with the same name already exist", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 

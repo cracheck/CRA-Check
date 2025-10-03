@@ -3,7 +3,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using CRA_Check.Models;
 using CRA_Check.Tools.SbomGenerators;
+using CRA_Check.ViewModels;
 using MahApps.Metro.Controls;
 
 
@@ -14,6 +16,7 @@ namespace CRA_Check.Views
     /// </summary>
     public partial class NewOrEditReleaseWindow : MetroWindow, INotifyPropertyChanged
     {
+        private Software _software;
         private ISbomGenerator _sbomGenerator;
 
         private string _versionStr;
@@ -27,9 +30,8 @@ namespace CRA_Check.Views
             }
         }
 
-        // TODO change with boolean
-        private string _SbomStatus;
-        public string SbomStatus
+        private bool _SbomStatus;
+        public bool SbomStatus
         {
             get { return _SbomStatus; }
             set
@@ -45,8 +47,9 @@ namespace CRA_Check.Views
 
         public bool IsValid { get; private set; }
 
-        public NewOrEditReleaseWindow(ISbomGenerator sbomGenerator)
+        public NewOrEditReleaseWindow(Software software, ISbomGenerator sbomGenerator)
         {
+            _software = software;
             _sbomGenerator = sbomGenerator;
 
             InitializeComponent();
@@ -56,7 +59,6 @@ namespace CRA_Check.Views
 
         private void Create_OnClick(object sender, RoutedEventArgs e)
         {
-            // TODO test unique
             Version version;
             if (Version.TryParse(VersionStr, out version))
             {
@@ -68,7 +70,13 @@ namespace CRA_Check.Views
                 return;
             }
 
-            if (SbomStatus != "OK")
+            if (_software.Releases.Any(r => r.Version == Version))
+            {
+                System.Windows.MessageBox.Show("This version number already exist for this software.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (!SbomStatus)
             {
                 System.Windows.MessageBox.Show("The sbom is not valid", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -117,11 +125,19 @@ namespace CRA_Check.Views
             {
                 string sbom = File.ReadAllText(openFileDialog.FileName);
 
-                // TODO check validity. With Syft ?
-
-                Sbom = sbom;
-                SbomStatus = "OK";
+                if (CheckSbom(sbom))
+                {
+                    Sbom = sbom;
+                    SbomStatus = true;
+                }
             }
+        }
+
+        private bool CheckSbom(string sbom)
+        {
+            // TODO check validity. With Syft ?
+
+            return true;
         }
 
         private async void ScanSbom_OnClick(object sender, RoutedEventArgs e)
@@ -130,9 +146,21 @@ namespace CRA_Check.Views
 
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                // TODO change. Add a progress bar
-                Sbom = await _sbomGenerator.GenerateSbom(dialog.SelectedPath); 
-                SbomStatus = "OK";
+                LoadingWindow window = new LoadingWindow();
+
+                window.Show();
+
+                window.WaitingMessage = "Creating SBOM";
+                
+                string sbom = await _sbomGenerator.GenerateSbom(dialog.SelectedPath);
+
+                window.Close();
+
+                if (CheckSbom(sbom))
+                {
+                    Sbom = sbom;
+                    SbomStatus = true;
+                }
             }
         }
 

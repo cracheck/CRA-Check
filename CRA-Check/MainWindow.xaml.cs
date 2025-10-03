@@ -24,10 +24,12 @@ namespace CRA_Check
         {
             InitializeComponent();
 
+#if DEBUG
             if (!File.Exists(@"d:\test.cradb"))
             {
                 TryDb();
             }
+#endif
 
             MainViewModel = new MainViewModel();
 
@@ -133,7 +135,7 @@ namespace CRA_Check
 
         private void AddSoftware_OnClick(object sender, RoutedEventArgs e)
         {
-            NewOrEditSoftwareWindow window = new NewOrEditSoftwareWindow() { Owner = this };
+            NewOrEditSoftwareWindow window = new NewOrEditSoftwareWindow(MainViewModel.Softwares) { Owner = this };
             window.ShowDialog();
 
             if (window.IsValid)
@@ -157,16 +159,16 @@ namespace CRA_Check
 
         private void AddRelease_OnClick(object sender, RoutedEventArgs e)
         {
-            NewOrEditReleaseWindow window = new NewOrEditReleaseWindow(MainViewModel.SbomGenerator) { Owner = this };
-            window.ShowDialog();
-
-            if (window.IsValid)
+            FrameworkElement control = sender as FrameworkElement;
+            if (control != null)
             {
-                FrameworkElement control = sender as FrameworkElement;
-                if (control != null)
+                Software software = control.Tag as Software;
+                if (software != null)
                 {
-                    Software software = control.Tag as Software;
-                    if (software != null)
+                    NewOrEditReleaseWindow window = new NewOrEditReleaseWindow(software, MainViewModel.SbomGenerator) { Owner = this };
+                    window.ShowDialog();
+
+                    if (window.IsValid)
                     {
                         software.Releases.Add(new Release() { Version = window.Version, Sbom = window.Sbom, Software = software });
                     }
@@ -193,7 +195,7 @@ namespace CRA_Check
                 Software software = control.Tag as Software;
                 if (software != null)
                 {
-                    NewOrEditSoftwareWindow window = new NewOrEditSoftwareWindow(software.Name);
+                    NewOrEditSoftwareWindow window = new NewOrEditSoftwareWindow(MainViewModel.Softwares, software.Name);
                     window.ShowDialog();
 
                     if (window.IsValid)
