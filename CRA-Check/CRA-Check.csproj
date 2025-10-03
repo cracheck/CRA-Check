@@ -43,4 +43,8 @@
 	  </Compile>
 	</ItemGroup>
 
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	  <Exec Command="XCOPY/S/E/Y/D &quot;$(ProjectDir)..\External\syft.exe&quot; &quot;$(TargetDir)&quot;&#xD;&#xA;XCOPY/S/E/Y/D &quot;$(ProjectDir)..\External\grype.exe&quot; &quot;$(TargetDir)&quot;" />
+	</Target>
+
 </Project>

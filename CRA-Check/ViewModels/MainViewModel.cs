@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.IO;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using CRA_Check.Data;
 using CRA_Check.Models;
@@ -14,6 +16,9 @@ namespace CRA_Check.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {
+        private static readonly string SYFT_FILEMAME = "syft.exe";
+        private static readonly string GRYPE_FILEMAME = "grype.exe";
+
         private DatabaseManager _databaseManager;
         public ISbomGenerator SbomGenerator { get; private set; }
         public IVulnerabilityScanner VulnerabilityScanner { get; private set; }
@@ -72,9 +77,13 @@ namespace CRA_Check.ViewModels
         public MainViewModel()
         {
             _databaseManager = new DatabaseManager();
-            SbomGenerator = new SyftSbomGenerator(@"D:\Syft.exe"); // TODO change
-            VulnerabilityScanner = new GrypeScanner(@"D:\Grype.exe"); // TODO change
+
+            string exeDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            SbomGenerator = new SyftSbomGenerator(Path.Combine(exeDirectory, SYFT_FILEMAME));
+            VulnerabilityScanner = new GrypeScanner(Path.Combine(exeDirectory, GRYPE_FILEMAME));
+
             ReportGenerator = new PdfReportGenerator();
+            
             OpenWorkspace(@"d:\test.cradb"); // TODO Remove
         }
 
