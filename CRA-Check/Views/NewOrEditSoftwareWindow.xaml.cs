@@ -1,5 +1,4 @@
 ﻿using CRA_Check.Models;
-using CRA_Check.ViewModels;
 using MahApps.Metro.Controls;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -11,12 +10,23 @@ namespace CRA_Check.Views
 {
     /// <summary>
     /// Interaction logic for NewOrEditSoftwareWindow.xaml
+    /// Window to create or edit a Software
     /// </summary>
     public partial class NewOrEditSoftwareWindow : MetroWindow, INotifyPropertyChanged
     {
+        /// <summary>
+        /// List of existing Software
+        /// </summary>
         private ObservableCollection<Software> _softwares;
+        
+        /// <summary>
+        /// Software original name in case of edition
+        /// </summary>
         private string _originalName;
 
+        /// <summary>
+        /// Software name
+        /// </summary>
         private string _softwareName;
         public string SoftwareName
         {
@@ -28,12 +38,26 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// True it is in creation mode, False it is edition mode
+        /// </summary>
         public bool IsCreationMode { get; private set; }
 
+        /// <summary>
+        /// Window title. Depend if it is in creation or edition
+        /// </summary>
         public string WindowTitle { get; private set; } = "Edit software";
 
+        /// <summary>
+        /// True if the all information are valid
+        /// </summary>
         public bool IsValid { get; private set; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="softwares">List of existing Software</param>
+        /// <param name="name">Name of Software. By default is null. If is null => creation mode else edition mode</param>
         public NewOrEditSoftwareWindow(ObservableCollection<Software> softwares, string name = null)
         {
             _softwares = softwares;
@@ -51,6 +75,11 @@ namespace CRA_Check.Views
             DataContext = this;
         }
 
+        /// <summary>
+        /// Action to apply the modification
+        /// </summary>
+        /// <param name="sender">Not used</param>
+        /// <param name="e">Not used</param>
         private void Apply_OnClick(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(SoftwareName))
@@ -69,6 +98,11 @@ namespace CRA_Check.Views
             Close();
         }
 
+        /// <summary>
+        /// Action to cancel the edition
+        /// </summary>
+        /// <param name="sender">Not used</param>
+        /// <param name="e">Not used</param>
         private void Cancel_OnClick(object sender, RoutedEventArgs e)
         {
             Close();

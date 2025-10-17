@@ -9,9 +9,13 @@ namespace CRA_Check.Views
 {
     /// <summary>
     /// Interaction logic for WorkspaceStatusControl.xaml
+    /// Overview of workspace. Resume the vulnerabilities of the workspace
     /// </summary>
     public partial class WorkspaceStatusControl : UserControl, INotifyPropertyChanged
     {
+        /// <summary>
+        /// List of Software
+        /// </summary>
         public static readonly DependencyProperty SoftwaresProperty = DependencyProperty.Register("Softwares", typeof(ObservableCollection<Software>), typeof(WorkspaceStatusControl), new FrameworkPropertyMetadata(new ObservableCollection<Software>(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, SoftwaresPropertyChangedCallback));
         private static void SoftwaresPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -22,12 +26,18 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// List of Software
+        /// </summary>
         public ObservableCollection<Software> Softwares
         {
             get { return (ObservableCollection<Software>)GetValue(SoftwaresProperty); }
             set { SetValue(SoftwaresProperty, value); }
         }
 
+        /// <summary>
+        /// Number of software with critical vulnerability
+        /// </summary>
         private int _SoftwareCriticalNumber;
         public int SoftwareCriticalNumber
         {
@@ -39,6 +49,9 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Number of software with high vulnerability
+        /// </summary>
         private int _SoftwareHighNumber;
         public int SoftwareHighNumber
         {
@@ -50,6 +63,9 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Number of software with medium vulnerability
+        /// </summary>
         private int _SoftwareMediumNumber;
         public int SoftwareMediumNumber
         {
@@ -61,6 +77,9 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Number of software with low vulnerability
+        /// </summary>
         private int _SoftwareLowNumber;
         public int SoftwareLowNumber
         {
@@ -72,6 +91,9 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Number of software with no vulnerability
+        /// </summary>
         private int _SoftwareNoRiskNumber;
         public int SoftwareNoRiskNumber
         {
@@ -83,6 +105,9 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Number of software with unknow vulnerability
+        /// </summary>
         private int _SoftwareUnknowNumber;
         public int SoftwareUnknowNumber
         {
@@ -94,6 +119,9 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Number of release with critical vulnerability
+        /// </summary>
         private int _ReleaseCriticalNumber;
         public int ReleaseCriticalNumber
         {
@@ -105,6 +133,9 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Number of release with high vulnerability
+        /// </summary>
         private int _ReleaseHighNumber;
         public int ReleaseHighNumber
         {
@@ -116,6 +147,9 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Number of release with medium vulnerability
+        /// </summary>
         private int _ReleaseMediumNumber;
         public int ReleaseMediumNumber
         {
@@ -127,6 +161,9 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Number of release with low vulnerability
+        /// </summary>
         private int _ReleaseLowNumber;
         public int ReleaseLowNumber
         {
@@ -138,6 +175,9 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Number of release with no vulnerability
+        /// </summary>
         private int _ReleaseNoRiskNumber;
         public int ReleaseNoRiskNumber
         {
@@ -149,6 +189,9 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Number of release with unknow vulnerability
+        /// </summary>
         private int _ReleaseUnknowNumber;
         public int ReleaseUnknowNumber
         {
@@ -160,6 +203,9 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Number of component with critical vulnerability
+        /// </summary>
         private int _ComponentCriticalNumber;
         public int ComponentCriticalNumber
         {
@@ -171,6 +217,9 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Number of component with high vulnerability
+        /// </summary>
         private int _ComponentHighNumber;
         public int ComponentHighNumber
         {
@@ -182,6 +231,9 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Number of component with medium vulnerability
+        /// </summary>
         private int _ComponentMediumNumber;
         public int ComponentMediumNumber
         {
@@ -193,6 +245,9 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Number of component with low vulnerability
+        /// </summary>
         private int _ComponentLowNumber;
         public int ComponentLowNumber
         {
@@ -204,6 +259,9 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Number of component with no vulnerability
+        /// </summary>
         private int _ComponentNoRiskNumber;
         public int ComponentNoRiskNumber
         {
@@ -215,6 +273,9 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Number of component with unknow vulnerability
+        /// </summary>
         private int _ComponentUnknowNumber;
         public int ComponentUnknowNumber
         {
@@ -226,6 +287,9 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Last scan of the workspace
+        /// </summary>
         private DateTime _LastScan;
         public DateTime LastScan
         {
@@ -237,6 +301,9 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public WorkspaceStatusControl()
         {
             InitializeComponent();
@@ -244,6 +311,9 @@ namespace CRA_Check.Views
             DataContext = this;
         }
 
+        /// <summary>
+        /// Update value after a scan
+        /// </summary>
         private void UpdateValues()
         {
             SoftwareCriticalNumber = 0;

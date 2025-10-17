@@ -3,8 +3,16 @@ using CRA_Check.Models;
 
 namespace CRA_Check.Tools.Parser
 {
+    /// <summary>
+    /// Simple parser for CycloneDX format
+    /// </summary>
     public static class CycloneDXParser
     {
+        /// <summary>
+        /// Parse components
+        /// </summary>
+        /// <param name="json">Components as CycloneDX format (JSON)</param>
+        /// <returns>List of Component</returns>
         public static List<Component> ParseComponents(string json)
         {
             List<Component> components = new List<Component>();
@@ -37,6 +45,11 @@ namespace CRA_Check.Tools.Parser
             return components;
         }
 
+        /// <summary>
+        /// Parse vulnerabilities
+        /// </summary>
+        /// <param name="json">Vulnerabilities as CycloneDX format (JSON)</param>
+        /// <returns>List of Vulnerability</returns>
         public static List<Vulnerability> ParseVulnerabilities(string json)
         {
             List<Vulnerability> vulnerabilities = new List<Vulnerability>();

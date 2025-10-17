@@ -6,9 +6,13 @@ namespace CRA_Check.Views
 {
     /// <summary>
     /// Interaction logic for AboutWindow.xaml
+    /// About window
     /// </summary>
     public partial class AboutWindow : MetroWindow, INotifyPropertyChanged
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public AboutWindow()
         {
             InitializeComponent();
@@ -16,6 +20,9 @@ namespace CRA_Check.Views
             DataContext = this;
         }
 
+        /// <summary>
+        /// Version of the application
+        /// </summary>
         private Version _version;
         public Version Version
         {
@@ -27,6 +34,9 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Version of Syft
+        /// </summary>
         private Version _syftVersion;
         public Version SyftVersion
         {
@@ -38,8 +48,10 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Version of Grype.exe
+        /// </summary>
         private Version _grypeVersion;
-
         public Version GrypeVersion
         {
             get { return _grypeVersion; }

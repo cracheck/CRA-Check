@@ -1,11 +1,18 @@
-﻿
-using CRA_Check.Models;
+﻿using CRA_Check.Models;
 using QuestPDF.Fluent;
 
 namespace CRA_Check.Tools.ReportGenerators
 {
+    /// <summary>
+    /// PDF vulnerabilities report generator
+    /// </summary>
     public class PdfReportGenerator : IReportGenerator
     {
+        /// <summary>
+        /// Generate a vulnerabilities report for a release. In PDF format
+        /// </summary>
+        /// <param name="release">Release</param>
+        /// <param name="destinationPath">Output file for the report</param>
         public void GenerateReport(Release release, string destinationFilename)
         {
             Document.Create(container =>
@@ -27,10 +34,6 @@ namespace CRA_Check.Tools.ReportGenerators
                                     vulnerabilitiesRow.RelativeItem().Text($"Score: {vulnerability.Ratings[0].Score}");
                                     vulnerabilitiesRow.RelativeItem().Text($"Severity: {vulnerability.Ratings[0].Severity}");
                                 });
-                                //page.Content().PaddingVertical(10).PaddingHorizontal(30).Column(vulnerabilitiesColumn =>
-                                //{
-                                //    vulnerabilitiesColumn.Item().Text("Test");
-                                //});
                             }
                         }
 
@@ -40,11 +43,6 @@ namespace CRA_Check.Tools.ReportGenerators
                     page.Footer().AlignCenter().Text("asd").FontSize(10);
                 });
             }).GeneratePdf(destinationFilename);
-        }
-
-        public void GenerateReport(string sourcePath, string destinationPath)
-        {
-
         }
     }
 }

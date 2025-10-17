@@ -3,26 +3,68 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CRA_Check.Data
 {
+    /// <summary>
+    /// Database context for workspace SQLite database
+    /// </summary>
     public class DbContext : Microsoft.EntityFrameworkCore.DbContext
     {
+        /// <summary>
+        /// Database filename
+        /// </summary>
         private readonly string _databaseFilename;
+
+        /// <summary>
+        /// Workspace information DBSet
+        /// </summary>
         public DbSet<WorkspaceInformation> WorkspaceInformation { get; set; }
+
+        /// <summary>
+        /// Softwares DBSet
+        /// </summary>
         public DbSet<Software> Softwares { get; set; }
+
+        /// <summary>
+        /// Releases DBSet
+        /// </summary>
         public DbSet<Release> Releases { get; set; }
+
+        /// <summary>
+        /// Components DBSet
+        /// </summary>
         public DbSet<Component> Components { get; set; }
+
+        /// <summary>
+        /// Vulnerabilites DBSet
+        /// </summary>
         public DbSet<Vulnerability> Vulnerabilities { get; set; }
+
+        /// <summary>
+        /// Ratings DBSet
+        /// </summary>
         public DbSet<Rating> Ratings { get; set; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="databaseFilename">Database filename</param>
         public DbContext(string databaseFilename)
         {
             _databaseFilename = databaseFilename;
         }
 
+        /// <summary>
+        /// On configuring event. Configure the database file
+        /// </summary>
+        /// <param name="optionBuilder">Option builder</param>
         protected override void OnConfiguring(DbContextOptionsBuilder optionBuilder)
         {
             optionBuilder.UseSqlite($"Data Source={_databaseFilename}");
         }
 
+        /// <summary>
+        /// On model creating. Create the database structure
+        /// </summary>
+        /// <param name="modelBuilder">Model builder</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Software>()

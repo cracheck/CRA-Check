@@ -5,10 +5,19 @@ using System.Runtime.CompilerServices;
 
 namespace CRA_Check.Models
 {
+    /// <summary>
+    /// Data model for software
+    /// </summary>
     public class Software : INotifyPropertyChanged
     {
+        /// <summary>
+        /// Database ID
+        /// </summary>
         public int Id { get; set; }
 
+        /// <summary>
+        /// Name
+        /// </summary>
         private string _name;
         public string Name
         {
@@ -20,6 +29,9 @@ namespace CRA_Check.Models
             }
         }
 
+        /// <summary>
+        /// List of Release
+        /// </summary>
         private ObservableCollection<Release> _releases;
         public ObservableCollection<Release> Releases
         {
@@ -31,12 +43,18 @@ namespace CRA_Check.Models
             }
         }
 
+        /// <summary>
+        /// Max SeverityLevel between all Release
+        /// </summary>
         [NotMapped]
         public SeverityLevel MaxSeverityLevel
         {
             get { return Releases.Where(r => r.IsActive).DefaultIfEmpty(new Release()).Max(r => r.MaxSeverityLevel); }
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public Software()
         {
             Releases = new ObservableCollection<Release>();

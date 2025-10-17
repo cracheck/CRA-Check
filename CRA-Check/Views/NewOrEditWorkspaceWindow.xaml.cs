@@ -8,9 +8,13 @@ namespace CRA_Check.Views
 {
     /// <summary>
     /// Interaction logic for NewOrEditWorkspaceWindow.xaml
+    /// Create or edit a Workspace
     /// </summary>
     public partial class NewOrEditWorkspaceWindow : MetroWindow, INotifyPropertyChanged
     {
+        /// <summary>
+        /// Workspace
+        /// </summary>
         private string _workspaceName;
         public string WorkspaceName
         {
@@ -22,6 +26,9 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Filename of the Workspace
+        /// </summary>
         private string _filename;
         public string Filename
         {
@@ -33,12 +40,25 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// True it is in creation mode, False it is edition mode
+        /// </summary>
         public bool IsCreationMode { get; private set; }
 
+        /// <summary>
+        /// Window title. Depend if it is in creation or edition
+        /// </summary>
         public string WindowTitle { get; private set; } = "Edit workspace";
 
+        /// <summary>
+        /// True if the all information are valid
+        /// </summary>
         public bool IsValid { get; private set; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="name">Name of Workspace. By default is null. If is null => creation mode else edition mode</param>
         public NewOrEditWorkspaceWindow(string name = null)
         {
             WorkspaceName = name;
@@ -53,6 +73,11 @@ namespace CRA_Check.Views
             DataContext = this;
         }
 
+        /// <summary>
+        /// Action to select the workspace path
+        /// </summary>
+        /// <param name="sender">Not used</param>
+        /// <param name="e">Not used</param>
         private void Browse_OnClick(object sender, RoutedEventArgs e)
         {
             SaveFileDialog dialog = new SaveFileDialog()
@@ -69,6 +94,11 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Action to apply the modification
+        /// </summary>
+        /// <param name="sender">Not used</param>
+        /// <param name="e">Not used</param>
         private void Apply_OnClick(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(WorkspaceName))
@@ -88,6 +118,11 @@ namespace CRA_Check.Views
             Close();
         }
 
+        /// <summary>
+        /// Action to cancel the edition
+        /// </summary>
+        /// <param name="sender">Not used</param>
+        /// <param name="e">Not used</param>
         private void Cancel_OnClick(object sender, RoutedEventArgs e)
         {
             Close();

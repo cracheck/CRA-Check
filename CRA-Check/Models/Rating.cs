@@ -3,14 +3,29 @@ using System.Runtime.CompilerServices;
 
 namespace CRA_Check.Models
 {
+    /// <summary>
+    /// Data model for rating
+    /// </summary>
     public class Rating : INotifyPropertyChanged
     {
+        /// <summary>
+        /// Database ID
+        /// </summary>
         public int Id { get; set; }
 
+        /// <summary>
+        /// Vulnerability
+        /// </summary>
         public Vulnerability Vulnerability { get; set; }
 
+        /// <summary>
+        /// Vulnerability ID
+        /// </summary>
         public int VulnerabilityId { get; set; }
 
+        /// <summary>
+        /// Rating vector
+        /// </summary>
         private string _vector;
         public string Vector
         {
@@ -22,6 +37,9 @@ namespace CRA_Check.Models
             }
         }
 
+        /// <summary>
+        /// Rating method
+        /// </summary>
         private string _method;
         public string Method
         {
@@ -33,6 +51,9 @@ namespace CRA_Check.Models
             }
         }
 
+        /// <summary>
+        /// Rating score
+        /// </summary>
         private double _Score;
         public double Score
         {
@@ -44,6 +65,9 @@ namespace CRA_Check.Models
             }
         }
 
+        /// <summary>
+        /// Severity level
+        /// </summary>
         private SeverityLevel _severity;
         public SeverityLevel Severity
         {
@@ -55,6 +79,9 @@ namespace CRA_Check.Models
             }
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public Rating()
         {
             Severity = SeverityLevel.noRisk;

@@ -6,8 +6,19 @@ using Color = System.Windows.Media.Color;
 
 namespace CRA_Check.Converters
 {
+    /// <summary>
+    /// Converter. Convert SecurityLevel enum to Color
+    /// </summary>
     public class RiskLevelToColorConverter : IValueConverter
     {
+        /// <summary>
+        /// Convert SecurityLevel enum to Color
+        /// </summary>
+        /// <param name="value">SecurityLevel value</param>
+        /// <param name="targetType">Not used</param>
+        /// <param name="parameter">not used</param>
+        /// <param name="culture">Not used</param>
+        /// <returns>Color</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             SeverityLevel severityLevel = (SeverityLevel)value;
@@ -32,6 +43,11 @@ namespace CRA_Check.Converters
             return Colors.White;
         }
 
+        /// <summary>
+        /// Convert back. Color to SecurityLevel
+        /// Not implemented
+        /// </summary>
+        /// <exception cref="NotImplementedException"></exception>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();

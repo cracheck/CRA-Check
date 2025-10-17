@@ -8,9 +8,13 @@ namespace CRA_Check.Views
 {
     /// <summary>
     /// Interaction logic for ReleaseStatusControl.xaml
+    /// Overview of a Release. Resume the vulnerabilities of the Release
     /// </summary>
     public partial class ReleaseStatusControl : UserControl, INotifyPropertyChanged
     {
+        /// <summary>
+        /// Release
+        /// </summary>
         public static readonly DependencyProperty ReleaseProperty = DependencyProperty.Register("Release", typeof(Release), typeof(ReleaseStatusControl), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ReleasePropertyChangedCallback));
         private static void ReleasePropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -21,12 +25,18 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Release
+        /// </summary>
         public Release Release
         {
             get { return (Release)GetValue(ReleaseProperty); }
             set { SetValue(ReleaseProperty, value); }
         }
 
+        /// <summary>
+        /// Number of component with critical vulnerability
+        /// </summary>
         private int _ComponentCriticalNumber;
         public int ComponentCriticalNumber
         {
@@ -37,7 +47,10 @@ namespace CRA_Check.Views
                 OnPropertyChanged();
             }
         }
-
+        
+        /// <summary>
+        /// Number of component with high vulnerability
+        /// </summary>
         private int _ComponentHighNumber;
         public int ComponentHighNumber
         {
@@ -49,6 +62,9 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Number of component with medium vulnerability
+        /// </summary>
         private int _ComponentMediumNumber;
         public int ComponentMediumNumber
         {
@@ -60,6 +76,9 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Number of component with low vulnerability
+        /// </summary>
         private int _ComponentLowNumber;
         public int ComponentLowNumber
         {
@@ -71,6 +90,9 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Number of component with no vulnerability
+        /// </summary>
         private int _ComponentNoRiskNumber;
         public int ComponentNoRiskNumber
         {
@@ -82,6 +104,9 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Number of component with unknow vulnerability
+        /// </summary>
         private int _ComponentUnknowNumber;
         public int ComponentUnknowNumber
         {
@@ -93,6 +118,9 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Last scan of the release
+        /// </summary>
         private DateTime _LastScan;
         public DateTime LastScan
         {
@@ -104,13 +132,17 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public ReleaseStatusControl()
         {
             InitializeComponent();
-
-           // DataContext = this;
         }
 
+        /// <summary>
+        /// Update value after a scan
+        /// </summary>
         private void UpdateValues()
         {
             ComponentCriticalNumber = 0;

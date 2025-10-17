@@ -6,11 +6,14 @@ namespace CRA_Check.Views
 {
     /// <summary>
     /// Interaction logic for LoadingWindow.xaml
+    /// Loading window
     /// </summary>
     public partial class LoadingWindow : MetroWindow, INotifyPropertyChanged
     {
+        /// <summary>
+        /// Waiting message
+        /// </summary>
         private string _waitingMessage;
-
         public string WaitingMessage
         {
             get { return _waitingMessage; }
@@ -21,6 +24,9 @@ namespace CRA_Check.Views
             }
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public LoadingWindow()
         {
             InitializeComponent();

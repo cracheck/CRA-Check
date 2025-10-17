@@ -5,14 +5,34 @@ using System.Runtime.CompilerServices;
 
 namespace CRA_Check.Models
 {
+    /// <summary>
+    /// Data model for release
+    /// </summary>
     public class Release : INotifyPropertyChanged
     {
+        /// <summary>
+        /// Database ID
+        /// </summary>
         public int Id { get; set; }
+
+        /// <summary>
+        /// Software
+        /// </summary>
         public Software Software { get; set; }
+
+        /// <summary>
+        /// Software ID
+        /// </summary>
         public int SoftwareId { get; set; }
 
+        /// <summary>
+        /// Release version as string
+        /// </summary>
         public string VersionStr { get; set; }
 
+        /// <summary>
+        /// Release version
+        /// </summary>
         [NotMapped]
         public Version Version
         {
@@ -24,6 +44,9 @@ namespace CRA_Check.Models
             }
         }
 
+        /// <summary>
+        /// SBOM
+        /// </summary>
         // May be a JSON object in the futur
         private string _sbom;
         public string Sbom
@@ -36,6 +59,9 @@ namespace CRA_Check.Models
             }
         }
 
+        /// <summary>
+        /// Last scan date and time
+        /// </summary>
         private DateTime _lastScan;
         public DateTime LastScan
         {
@@ -47,6 +73,9 @@ namespace CRA_Check.Models
             }
         }
 
+        /// <summary>
+        /// Is the release is active
+        /// </summary>
         private bool _isActive;
         public bool IsActive
         {
@@ -58,6 +87,9 @@ namespace CRA_Check.Models
             }
         }
 
+        /// <summary>
+        /// List of components
+        /// </summary>
         private ObservableCollection<Component> _components;
         public ObservableCollection<Component> Components
         {
@@ -69,12 +101,18 @@ namespace CRA_Check.Models
             }
         }
 
+        /// <summary>
+        /// Max severity level between all components
+        /// </summary>
         [NotMapped]
         public SeverityLevel MaxSeverityLevel
         {
             get { return Components.DefaultIfEmpty(new Component()).Max(v => v.MaxSeverityLevel); }
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public Release()
         {
             Components = new ObservableCollection<Component>();

@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.IO;
 using System.Reflection;
 using System.Windows;
 using CRA_Check.Data;
@@ -15,11 +14,19 @@ namespace CRA_Check
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
+    /// Main window
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
+        /// <summary>
+        /// Main view model
+        /// </summary>
         public MainViewModel MainViewModel { get; private set; }
 
+        /// <summary>
+        /// Constructor
+        /// Create MainViewModel and set the DataContext
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
@@ -36,6 +43,10 @@ namespace CRA_Check
             DataContext = MainViewModel;
         }
 
+        /// <summary>
+        /// Launch a scan for a list of Release
+        /// </summary>
+        /// <param name="releases">List of Release to be scanned</param>
         async private void ScanReleases(List<Release> releases)
         {
             LoadingWindow window = new LoadingWindow();
@@ -61,6 +72,9 @@ namespace CRA_Check
             window.Close();
         }
 
+        /// <summary>
+        /// Create a debug Workspace. Debug only
+        /// </summary>
         private void TryDb()
         {
             using var db = new DbContext(@"d:\test.cradb");
@@ -83,6 +97,11 @@ namespace CRA_Check
             db.SaveChanges();
         }
 
+        /// <summary>
+        /// Action to open a Workspace
+        /// </summary>
+        /// <param name="sender">Not used</param>
+        /// <param name="e">Not used</param>
         private void OpenWorkspace_OnClick(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
@@ -100,11 +119,21 @@ namespace CRA_Check
             }
         }
 
+        /// <summary>
+        /// Action to exit the application
+        /// </summary>
+        /// <param name="sender">Not used</param>
+        /// <param name="e">Not used</param>
         private void Exit_OnClick(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
+        /// <summary>
+        /// Action to create a new Workspace
+        /// </summary>
+        /// <param name="sender">Not used</param>
+        /// <param name="e">Not used</param>
         private void NewWorkspace_OnClick(object sender, RoutedEventArgs e)
         {
             NewOrEditWorkspaceWindow window = new NewOrEditWorkspaceWindow() { Owner = this };
@@ -116,6 +145,11 @@ namespace CRA_Check
             }
         }
 
+        /// <summary>
+        /// Action to scan the opened Workspace
+        /// </summary>
+        /// <param name="sender">Not used</param>
+        /// <param name="e">Not used</param>
         async private void ScanWorkspace_OnClick(object sender, RoutedEventArgs e)
         {
             List<Release> releases = new List<Release>();
@@ -133,6 +167,11 @@ namespace CRA_Check
             ScanReleases(releases);
         }
 
+        /// <summary>
+        /// Action to add a new Software to the Workspace
+        /// </summary>
+        /// <param name="sender">Not used</param>
+        /// <param name="e">Not used</param>
         private void AddSoftware_OnClick(object sender, RoutedEventArgs e)
         {
             NewOrEditSoftwareWindow window = new NewOrEditSoftwareWindow(MainViewModel.Softwares) { Owner = this };
@@ -144,6 +183,11 @@ namespace CRA_Check
             }
         }
 
+        /// <summary>
+        /// Action to scan a specific Software
+        /// </summary>
+        /// <param name="sender">FrameElement that the Tag contain the specific Software to be scanned</param>
+        /// <param name="e">Not used</param>
         async private void ScanSoftware_OnClick(object sender, RoutedEventArgs e)
         {
             FrameworkElement control = sender as FrameworkElement;
@@ -157,6 +201,11 @@ namespace CRA_Check
             }
         }
 
+        /// <summary>
+        /// Action to add a Release to a specific Software
+        /// </summary>
+        /// <param name="sender">FrameElement that the Tag contain the specific Software</param>
+        /// <param name="e">Not used</param>
         private void AddRelease_OnClick(object sender, RoutedEventArgs e)
         {
             FrameworkElement control = sender as FrameworkElement;
@@ -176,6 +225,11 @@ namespace CRA_Check
             }
         }
 
+        /// <summary>
+        /// Action to edit the opened Workspace
+        /// </summary>
+        /// <param name="sender">Not used</param>
+        /// <param name="e">Not used</param>
         private void EditWorkspace_OnClick(object sender, RoutedEventArgs e)
         {
             NewOrEditWorkspaceWindow window = new NewOrEditWorkspaceWindow(MainViewModel.WorkspaceInformation.Name) { Owner = this };
@@ -187,6 +241,11 @@ namespace CRA_Check
             }
         }
 
+        /// <summary>
+        /// Action to edit a specific Software
+        /// </summary>
+        /// <param name="sender">FrameElement that the Tag contain the specific Software to be edited</param>
+        /// <param name="e">Not used</param>
         private void EditSoftware_OnClick(object sender, RoutedEventArgs e)
         {
             FrameworkElement control = sender as FrameworkElement;
@@ -206,6 +265,11 @@ namespace CRA_Check
             }
         }
 
+        /// <summary>
+        /// Action to delete to a specific Software
+        /// </summary>
+        /// <param name="sender">FrameElement that the Tag contain the specific Software to be deleted</param>
+        /// <param name="e">Not used</param>
         private void DeleteSoftware_OnClick(object sender, RoutedEventArgs e)
         {
             if (MessageBox.Show("Do you want to remove this software?", "Confirmation", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) !=
@@ -225,6 +289,11 @@ namespace CRA_Check
             }
         }
 
+        /// <summary>
+        /// Action to scan a specific Release
+        /// </summary>
+        /// <param name="sender">FrameElement that the Tag contain the specific Release to be scanned</param>
+        /// <param name="e">Not used</param>
         private async void ScanVulnerability_OnClick(object sender, RoutedEventArgs e)
         {
             FrameworkElement control = sender as FrameworkElement;
@@ -238,6 +307,11 @@ namespace CRA_Check
             }
         }
 
+        /// <summary>
+        /// Action to display details of scan of a specific Release
+        /// </summary>
+        /// <param name="sender">FrameElement that the Tag contain the specific Release</param>
+        /// <param name="e">Not used</param>
         private async void Detail_OnClick(object sender, RoutedEventArgs e)
         {
             FrameworkElement control = sender as FrameworkElement;
@@ -252,6 +326,11 @@ namespace CRA_Check
             }
         }
 
+        /// <summary>
+        /// Action to display the About view
+        /// </summary>
+        /// <param name="sender">Not used</param>
+        /// <param name="e">Not used</param>
         private async void About_OnClick(object sender, RoutedEventArgs e)
         {
             AboutWindow window = new AboutWindow() { Owner = this };
