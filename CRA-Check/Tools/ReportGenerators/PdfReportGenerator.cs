@@ -40,7 +40,7 @@ namespace CRA_Check.Tools.ReportGenerators
                         componentsColumn.Item().PaddingBottom(10);
                     });
 
-                    page.Footer().AlignCenter().Text("asd").FontSize(10);
+                    //page.Footer().AlignCenter().Text("asd").FontSize(10);
                 });
             }).GeneratePdf(destinationFilename);
         }

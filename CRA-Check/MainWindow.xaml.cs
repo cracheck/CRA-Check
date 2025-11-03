@@ -385,7 +385,8 @@ namespace CRA_Check
 
         private async void ScanVulnerabilityFromFile_OnClick(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog() { Title = "Open file", Filter = "Sbom file (*.json)|*.json" };
+            OpenFileDialog openFileDialog = new OpenFileDialog()
+            { Title = "Open file", Filter = "Sbom file (*.json)|*.json" };
 
             if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
@@ -419,6 +420,13 @@ namespace CRA_Check
                     File.WriteAllText(saveDialog.FileName, scanResultFormated);
                 }
             }
+        }
+
+        private async void GenerateReport_OnClick(object sender, RoutedEventArgs e)
+        {
+            GenerateReportWindow window = new GenerateReportWindow(MainViewModel.SbomGenerator, MainViewModel.VulnerabilityScanner, MainViewModel.ReportGenerator);
+
+            window.ShowDialog();
         }
     }
 }

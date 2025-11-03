@@ -26,6 +26,7 @@
             <MenuItem Header="_Tools">
                 <MenuItem Header="_Create SBOM" Click="CreateSbom_OnClick"/>
                 <MenuItem Header="_Scan vulnerability" Click="ScanVulnerabilityFromFile_OnClick"/>
+                <MenuItem Header="_Generate report" Click="GenerateReport_OnClick"/>
             </MenuItem>
             <MenuItem Header="?">
                 <MenuItem Header="_About" Click="About_OnClick"/>
