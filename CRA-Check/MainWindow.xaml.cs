@@ -1,12 +1,14 @@
-﻿using System.Collections.ObjectModel;
-using System.Reflection;
-using System.Windows;
-using CRA_Check.Data;
+﻿using CRA_Check.Data;
 using CRA_Check.Models;
 using CRA_Check.Tools.Parser;
 using CRA_Check.ViewModels;
 using CRA_Check.Views;
 using MahApps.Metro.Controls;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Reflection;
+using System.Text.Json;
+using System.Windows;
 using MessageBox = System.Windows.Forms.MessageBox;
 using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 
@@ -340,6 +342,83 @@ namespace CRA_Check
             window.GrypeVersion = await MainViewModel.VulnerabilityScanner.GetVersion();
 
             window.ShowDialog();
+        }
+
+        /// <summary>
+        /// Action to create an SBOM from a folder. Open and scan a forlder and finally save the SBOM file
+        /// </summary>
+        /// <param name="sender">Not used</param>
+        /// <param name="e">Not used</param>
+        private async void CreateSbom_OnClick(object sender, RoutedEventArgs e)
+        {
+            FolderBrowserDialog openDialog = new FolderBrowserDialog();
+
+            if (openDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                LoadingWindow window = new LoadingWindow();
+
+                window.Show();
+
+                window.WaitingMessage = "Creating SBOM";
+
+                string sbom = await MainViewModel.SbomGenerator.GenerateSbom(openDialog.SelectedPath);
+
+                window.Close();
+
+                SaveFileDialog saveDialog = new SaveFileDialog()
+                {
+                    Title = "Save SBOM",
+                    Filter = "SBOM file (*.json)|*.json",
+                    DefaultExt = ".json"
+                };
+
+                if (saveDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    using var doc = JsonDocument.Parse(sbom);
+                    var options = new JsonSerializerOptions { WriteIndented = true };
+                    string sbomFormated = JsonSerializer.Serialize(doc.RootElement, options);
+
+                    File.WriteAllText(saveDialog.FileName, sbomFormated);
+                }
+            }
+        }
+
+        private async void ScanVulnerabilityFromFile_OnClick(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog() { Title = "Open file", Filter = "Sbom file (*.json)|*.json" };
+
+            if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                LoadingWindow window = new LoadingWindow();
+
+                window.Show();
+
+                window.WaitingMessage = "Update database";
+
+                await MainViewModel.VulnerabilityScanner.UpdateDatabase();
+
+                window.WaitingMessage = "Scan for vulnerabilities";
+
+                string scanResult = await MainViewModel.VulnerabilityScanner.ScanVulnerability(openFileDialog.FileName);
+
+                window.Close();
+
+                SaveFileDialog saveDialog = new SaveFileDialog()
+                {
+                    Title = "Save vulenrabilities",
+                    Filter = "Vulnerabilities file (*.json)|*.json",
+                    DefaultExt = ".json"
+                };
+
+                if (saveDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    using var doc = JsonDocument.Parse(scanResult);
+                    var options = new JsonSerializerOptions { WriteIndented = true };
+                    string scanResultFormated = JsonSerializer.Serialize(doc.RootElement, options);
+
+                    File.WriteAllText(saveDialog.FileName, scanResultFormated);
+                }
+            }
         }
     }
 }

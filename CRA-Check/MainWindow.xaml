@@ -23,10 +23,10 @@
                 <MenuItem Header="_Open workspace" Click="OpenWorkspace_OnClick"/>
                 <MenuItem Header="_Exit" Click="Exit_OnClick"/>
             </MenuItem>
-            <!--<MenuItem Header="_Tools">
-                <MenuItem Header="_Create SBOM"/>
-                <MenuItem Header="_Generate report"/>
-            </MenuItem>-->
+            <MenuItem Header="_Tools">
+                <MenuItem Header="_Create SBOM" Click="CreateSbom_OnClick"/>
+                <MenuItem Header="_Scan vulnerability" Click="ScanVulnerabilityFromFile_OnClick"/>
+            </MenuItem>
             <MenuItem Header="?">
                 <MenuItem Header="_About" Click="About_OnClick"/>
             </MenuItem>
