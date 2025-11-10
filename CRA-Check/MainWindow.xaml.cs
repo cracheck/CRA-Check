@@ -143,6 +143,11 @@ namespace CRA_Check
 
             if (window.IsValid)
             {
+                if (File.Exists(window.Filename))
+                {
+                    File.Delete(window.Filename);
+                }
+
                 MainViewModel.CreateWorkspace(window.Filename, window.WorkspaceName);
             }
         }
